@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/logInFragment">
+
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.example.smarthouse.UI.LogInFragment"
+        android:label="fragment_log_in"
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/action_logInFragment_to_housesListFragmnet"
+            app:destination="@id/housesListFragmnet" />
+        <action
+            android:id="@+id/action_logInFragment_to_registration_graph"
+            app:destination="@id/registration_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/housesListFragmnet"
+        android:name="com.example.smarthouse.HousesListFragmnet"
+        android:label="fragment_houses_list_fragmnet"
+        tools:layout="@layout/fragment_houses_list_fragmnet" />
+    <navigation
+        android:id="@+id/registration_graph"
+        app:startDestination="@id/enterUserInformationFragment" >
+        <fragment
+            android:id="@+id/enterUserInformationFragment"
+            android:name="com.example.smarthouse.EnterUserInformationFragment"
+            android:label="fragment_enter_user_information"
+            tools:layout="@layout/fragment_enter_user_information" />
+        <fragment
+            android:id="@+id/chooseUserPasswordFragment"
+            android:name="com.example.smarthouse.ChooseUserPasswordFragment"
+            android:label="fragment_choose_user_password"
+            tools:layout="@layout/fragment_choose_user_password" />
+    </navigation>
+    <action android:id="@+id/action_global_logInFragment" app:destination="@id/logInFragment" />
+</navigation>

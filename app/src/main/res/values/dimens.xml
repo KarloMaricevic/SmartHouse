@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- dimensions for LogIn -->
+
+    <dimen name="headerTextSize">22sp</dimen>
+
+
+    <!--dimenstion for lgogInCardLayout-->
+
+    <dimen name="loginCardRadius">20dp</dimen>
+    <dimen name="loginViewsMargin">20dp</dimen>
+    <dimen name="newsMoreTextSize">12sp</dimen>
+
+
+</resources>

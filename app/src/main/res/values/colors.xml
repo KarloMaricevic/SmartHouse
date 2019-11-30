@@ -3,4 +3,15 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="whiteTextColor">#fff</color>
+    <color name="redTextColor">#DC143C</color>
+    <color name="loginBkColor">#f0f0f0</color>
+
+
+    <!--colors for LogInCardLayout -->
+    <color name="primaryTextColor">#00a5ff</color>
+    <color name="whiteCardColor">#fff</color>
+
+
+
 </resources>
