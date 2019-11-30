@@ -4,6 +4,7 @@ import android.app.Application;
 
 
 import com.example.smarthouse.BaseAplication;
+import com.example.smarthouse.di.HousesListFragment.HousesListFragmentBuildersModule;
 import com.example.smarthouse.di.LogInFragment.LogInFragmentBuildersModule;
 
 import javax.inject.Singleton;
@@ -18,7 +19,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {AndroidSupportInjectionModule.class,
                         AppModule.class,
                         LogInFragmentBuildersModule.class,
-                        ViewModelFactoryModule.class
+                        ViewModelFactoryModule.class,
+                        HousesListFragmentBuildersModule.class
 })
 public interface AppComponent extends AndroidInjector<BaseAplication> {
 

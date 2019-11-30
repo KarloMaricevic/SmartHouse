@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/logInFragment">
+    app:startDestination="@id/housesListFragmnet">
 
     <fragment
         android:id="@+id/logInFragment"
@@ -19,9 +19,13 @@
     </fragment>
     <fragment
         android:id="@+id/housesListFragmnet"
-        android:name="com.example.smarthouse.HousesListFragmnet"
+        android:name="com.example.smarthouse.UI.HousesListFragment"
         android:label="fragment_houses_list_fragmnet"
-        tools:layout="@layout/fragment_houses_list_fragmnet" />
+        tools:layout="@layout/fragment_houses_list_fragmnet" >
+        <action
+            android:id="@+id/action_housesListFragmnet_to_houseFragment"
+            app:destination="@id/houseFragment" />
+    </fragment>
     <navigation
         android:id="@+id/registration_graph"
         app:startDestination="@id/enterUserInformationFragment" >
@@ -37,4 +41,9 @@
             tools:layout="@layout/fragment_choose_user_password" />
     </navigation>
     <action android:id="@+id/action_global_logInFragment" app:destination="@id/logInFragment" />
+    <fragment
+        android:id="@+id/houseFragment"
+        android:name="com.example.smarthouse.HouseFragment"
+        android:label="fragment_house"
+        tools:layout="@layout/fragment_house" />
 </navigation>
