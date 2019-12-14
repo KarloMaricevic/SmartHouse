@@ -15,18 +15,37 @@ import com.bumptech.glide.RequestBuilder;
 import com.example.smarthouse.R;
 import com.example.smarthouse.data.UsersHouseInfo;
 import com.example.smarthouse.databinding.HouseItemBinding;
+import com.example.smarthouse.di.Scopes.PerFragment;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+@PerFragment
 public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.HouseItemViewHolder> {
 
 
     Context appContext;
     List<UsersHouseInfo> usersHausesList;
+
+    @Inject
+    public HousesListAdapter(Context context) {
+        usersHausesList = null;
+        appContext = context;
+    }
+
+    public HousesListAdapter(List<UsersHouseInfo> usersHausesList,Context context)
+    {
+        this.usersHausesList = usersHausesList;
+        appContext = context;
+    }
+
+
+
 
     @NonNull
     @Override
@@ -62,16 +81,8 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
     }
 
 
-    public HousesListAdapter(List<UsersHouseInfo> usersHausesList,Context context)
-    {
-        this.usersHausesList = usersHausesList;
-        appContext = context;
-    }
 
-    public HousesListAdapter(Context context) {
-        usersHausesList = null;
-        appContext = context;
-    }
+
 
 
 

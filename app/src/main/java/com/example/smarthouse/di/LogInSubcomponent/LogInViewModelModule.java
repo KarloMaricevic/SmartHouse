@@ -1,4 +1,4 @@
-package com.example.smarthouse.di.LogInFragment;
+package com.example.smarthouse.di.LogInSubcomponent;
 
 import androidx.lifecycle.ViewModel;
 
@@ -9,13 +9,10 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
 
-//ovo je za injektanje konkretnog ViewModela
-//za svaki kontkretni radiš novi binding
 @Module
-public abstract class LogInFragmentViewModelModule {
+public abstract class LogInViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(LogInViewModel.class)
-
     public abstract ViewModel bindViewModel(LogInViewModel logInViewModel);
 }

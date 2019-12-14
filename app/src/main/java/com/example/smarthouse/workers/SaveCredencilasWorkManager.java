@@ -39,7 +39,7 @@ public class SaveCredencilasWorkManager extends RxWorker {
                         emitter.onSuccess(Result.failure());
                     }
                     try{
-                        SharedPreferences userCredencials = getApplicationContext().getSharedPreferences("userCredencials",Context.MODE_PRIVATE);
+                        SharedPreferences userCredencials = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.sharedPreferencesName),Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor  = userCredencials.edit();
                         editor.putString(getApplicationContext().getString(R.string.password),password);
                         editor.putString(getApplicationContext().getString(R.string.username),username);
@@ -52,7 +52,6 @@ public class SaveCredencilasWorkManager extends RxWorker {
                         emitter.onSuccess(Result.retry());
                     }
                 }
-
         );
         return single;
     }

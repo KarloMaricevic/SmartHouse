@@ -1,4 +1,4 @@
-package com.example.smarthouse;
+package com.example.smarthouse.repositorys;
 
 import android.app.Application;
 
@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
 
+
+@Singleton
 public class Repository {
 
 

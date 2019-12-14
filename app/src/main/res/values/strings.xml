@@ -8,11 +8,19 @@
     <string name="password">password</string>
 
 
+    <!--LogInFragment -->
+    <string name="invalid_credencials">InvalidCredencials</string>
+
+
     <!-- logInCardLayout -->
 
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
+
+
+    <!-- SharedPreferencesName -->
+    <string name="sharedPreferencesName">userCredencials</string>
 
 
 </resources>
