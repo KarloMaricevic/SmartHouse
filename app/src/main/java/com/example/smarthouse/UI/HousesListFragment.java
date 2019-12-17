@@ -24,10 +24,12 @@ import com.example.smarthouse.viewmodels.ViewModelProviderFactory;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.disposables.DisposableContainer;
 
 
-public class HousesListFragment extends Fragment {
+public class HousesListFragment extends BaseFragment {
 
 
     @Inject
@@ -39,6 +41,7 @@ public class HousesListFragment extends Fragment {
     private HousesListViewModel viewModel;
 
     private FragmentHousesListFragmnetBinding binding;
+
 
 
     public HousesListFragment() {
@@ -81,13 +84,14 @@ public class HousesListFragment extends Fragment {
         //endregion
 
         binding.recyclerView.setAdapter(adapter);
-        Disposable usersHousesDisposable = viewModel.getUsersHousesObservable()
+        Disposable usersHousesDisposable =
+                viewModel.getUsersHousesObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((usersHousesList) -> {
                     adapter.setUsersHausesList(usersHousesList);
                     binding.recyclerView.getAdapter().notifyDataSetChanged();
                 },
-                (e) -> {}
+                (e) -> Log.e("usersHousesError: ",e.getMessage())
         );
 
         SearchView searchView = (SearchView) binding.toolbar.getMenu().findItem(R.id.action_search).getActionView();
@@ -107,16 +111,14 @@ public class HousesListFragment extends Fragment {
         });
 
 
-         viewModel.addViewDisposables(authStateDisposable,usersHousesDisposable);
+         addDisposables(authStateDisposable,usersHousesDisposable);
 
         return binding.getRoot();
     }
 
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        viewModel.clearViewDisposable();
-    }
+
+
+
 }
 

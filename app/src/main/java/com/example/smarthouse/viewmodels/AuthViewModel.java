@@ -11,7 +11,7 @@ import com.example.smarthouse.repositorys.SharedPreferencesRepository;
 import java.util.HashMap;
 import io.reactivex.Observable;
 
-public abstract class AuthViewModel extends BaseViewModel {
+public abstract class AuthViewModel extends ViewModel {
 
 
     public enum AuthenticationState {

@@ -23,4 +23,33 @@
     <string name="sharedPreferencesName">userCredencials</string>
 
 
+    <!--NavDrawerLayout -->
+    <string name="searchViewHint">Search rooms</string>
+
+
+    <!--RoomDrawerFragment-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <!-- doorView strings  -->
+    <string name="locked">Locked</string>
+    <string name="unLocked">Unlocked</string>
+
+
+    <!-- lightViws strings -->
+
+    <string name="turnedOn">On</string>
+    <string name="turnedOff">Off</string>
+
+
+    <!-- Options strings -->
+    <string name="doorOption">Doors</string>
+    <string name="lightOption">Light</string>
+    <string name="temperatureOption">Temperature</string>
+
+
+    <!-- fragment_room_details -->
+    <string name="noRoomDetails">Room doesn\'t have anything to control</string>
+
 </resources>

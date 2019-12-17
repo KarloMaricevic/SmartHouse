@@ -4,14 +4,31 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="whiteTextColor">#fff</color>
-    <color name="redTextColor">#DC143C</color>
     <color name="loginBkColor">#f0f0f0</color>
 
 
+
+    <color name="ErrorTextColor">#DC143C</color>
+
     <!--colors for LogInCardLayout -->
     <color name="primaryTextColor">#00a5ff</color>
-    <color name="whiteCardColor">#fff</color>
+    <color name="whiteCardColor">#ffffff</color>
 
+    <!--RoomsNameItem -->
+    <color name="nameItemTextColor">#666666</color>
+
+
+    <!--NavDrawerItem -->
+    <color name="ripple_color">#f2f2f2</color>
+    <color name="transparent">#00000000</color>
+
+    <!--NavDrawerLayout -->
+    <color name="searchViewBackgroundColor">#666666</color>
+    <color name="white">#ffffff</color>
+
+
+    <!--ToolbarLayout-->
+    <color name="toolbarBackgroundColor">#0066ff</color>
 
 
 </resources>

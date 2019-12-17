@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':myexpandablerecyclerview'
 rootProject.name='Smart house'

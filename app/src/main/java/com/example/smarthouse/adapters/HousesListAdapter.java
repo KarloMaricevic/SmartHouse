@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.example.smarthouse.R;
+import com.example.smarthouse.UI.HousesListFragmentDirections;
 import com.example.smarthouse.data.UsersHouseInfo;
 import com.example.smarthouse.databinding.HouseItemBinding;
 import com.example.smarthouse.di.Scopes.PerFragment;
@@ -106,10 +107,14 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
             binding.setClickListener(
                     (view) ->
                     {
-                        Bundle bundle =  new Bundle();
+                        HousesListFragmentDirections.ActionHousesListFragmnetToRoomFragment action =
+                                HousesListFragmentDirections.actionHousesListFragmnetToRoomFragment(usersHouseInfo.getHauseId(),usersHouseInfo.getName());
+
+  /*                      Bundle bundle =  new Bundle();
                         bundle.putString("houseId",usersHouseInfo.getHauseId());
-                        bundle.putString("houseName",usersHouseInfo.getName());
-                        Navigation.findNavController(view).navigate(R.id.action_housesListFragmnet_to_houseFragment,bundle);
+                        bundle.putString("houseName",usersHouseInfo.getName());*/
+                        //Navigation.findNavController(view).navigate(R.id.action_housesListFragmnet_to_roomFragment,bundle);
+                        Navigation.findNavController(view).navigate(action);
                     }
 
             );

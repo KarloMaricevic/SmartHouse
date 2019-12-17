@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="roomInfo"
+            type="com.example.smarthouse.data.roomData.RoomInfo" />
+
+        <variable
+            name="isSelected"
+            type="Boolean" />
+    </data>
+
+
+    <TextView
+        android:id="@+id/roomName"
+        android:text="@{roomInfo.name}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/nameItemTextColor"
+        android:textSize="@dimen/itemTextSize"
+        android:padding="@dimen/itemTextViewPadding"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:background="@{isSelected == true ? @color/ripple_color : @color/transparent}"
+        />
+</layout>

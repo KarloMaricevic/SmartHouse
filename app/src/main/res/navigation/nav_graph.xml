@@ -23,8 +23,8 @@
         android:label="fragment_houses_list_fragmnet"
         tools:layout="@layout/fragment_houses_list_fragmnet" >
         <action
-            android:id="@+id/action_housesListFragmnet_to_houseFragment"
-            app:destination="@id/houseFragment" />
+            android:id="@+id/action_housesListFragmnet_to_roomFragment"
+            app:destination="@id/roomFragment" />
     </fragment>
     <navigation
         android:id="@+id/registration_graph"
@@ -42,8 +42,15 @@
     </navigation>
     <action android:id="@+id/action_global_logInFragment" app:destination="@id/logInFragment" />
     <fragment
-        android:id="@+id/houseFragment"
-        android:name="com.example.smarthouse.HouseFragment"
-        android:label="fragment_house"
-        tools:layout="@layout/fragment_house" />
+        android:id="@+id/roomFragment"
+        android:name="com.example.smarthouse.UI.roomFragment.RoomFragment"
+        android:label="fragment_room"
+        tools:layout="@layout/fragment_room" >
+        <argument
+            android:name="HouseId"
+            app:argType="string" />
+        <argument
+            android:name="HouseName"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/ic_profilebackground"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/roomsToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbarHight"
+            android:background="@color/toolbarBackgroundColor"
+            android:elevation="@dimen/toolbarElevation"
+            android:contentInsetStart="@dimen/toolbarContentInsetStart">
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <fragment
+                android:id="@+id/roomFragment"
+                android:name="com.example.smarthouse.UI.roomFragment.RoomDetailsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </fragment>
+
+
+            <fragment
+                android:id="@+id/navigationFragment"
+                android:name="com.example.smarthouse.UI.roomFragment.RoomDrawerFragment"
+                android:layout_width="@dimen/drawerViewWidth"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|left"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+            </fragment>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+    </LinearLayout>
+</layout>

@@ -30,7 +30,7 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 
-public class LogInFragment extends Fragment {
+public class LogInFragment extends BaseFragment {
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -99,8 +99,7 @@ public class LogInFragment extends Fragment {
         );
 
         Disposable areFiledsFilledDisposabe = viewModel.getAreFiledsFilled().observeOn(AndroidSchedulers.mainThread()).subscribe(
-                (isFilled) ->
-                {
+                (isFilled) -> {
                     if(isFilled)
                     {
                         binding.cardLayout.cirLoginButton.setClickable(true);
@@ -109,20 +108,15 @@ public class LogInFragment extends Fragment {
                     {
                         binding.cardLayout.cirLoginButton.setClickable(false);
                     }
-                }
+                },
+                (e) -> Log.e("areFiledsFilledError: ",e.getMessage())
         );
 
-        viewModel.addViewDisposables(logInPositionDisposable,loginClickDisposable,registerTextViewClickDisposable,loginClickDisposable,areFiledsFilledDisposabe);
+        addDisposables(logInPositionDisposable,loginClickDisposable,registerTextViewClickDisposable,loginClickDisposable,areFiledsFilledDisposabe);
 
         return binding.getRoot();
     }
 
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        viewModel.clearViewDisposable();
-    }
 
     public void hideKeyboard(Context context,View focusedView)
     {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="door"
+            type="com.example.smarthouse.data.roomData.Door" />
+    </data>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/doorCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/doorConstraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:id="@+id/name"
+                android:text="@{door.name}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/textViewOptionPadding"
+                android:textSize="@dimen/textViewOptionChildTextSize"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/locked"
+                app:layout_constraintHorizontal_weight ="2"
+                app:layout_constraintHorizontal_chainStyle="spread">
+            </TextView>
+            <TextView
+                android:id="@+id/locked"
+                android:text="@{door.locked == true ? @string/locked : @string/unLocked }"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textViewOptionChildTextSize"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/name"
+                app:layout_constraintEnd_toStartOf="@id/target"
+                app:layout_constraintHorizontal_weight ="1"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/target"
+                android:text="@{door.targeted == true ? @string/locked : @string/unLocked }"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textViewOptionChildTextSize"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/locked"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight ="1">
+            </TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

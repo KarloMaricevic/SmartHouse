@@ -33,7 +33,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class LogInViewModel extends BaseViewModel{
+public class LogInViewModel extends ViewModel{
 
     public enum LogInPosition {
         UNAUTHENTICATED,
@@ -48,8 +48,8 @@ public class LogInViewModel extends BaseViewModel{
     protected ObservableField<String> password;
     protected ObservableField<LogInPosition> logInPosition;
 
-    Observable<ObservableField<String>> usernameFiledObserver;
-    Observable<ObservableField<String>> passwordFiledObserver;
+    Observable<String> usernameFiledObserver;
+    Observable<String> passwordFiledObserver;
 
 
     @Inject
@@ -164,13 +164,13 @@ public class LogInViewModel extends BaseViewModel{
     public Observable<Boolean> getAreFiledsFilled() {
         return Observable
                 .combineLatest(usernameFiledObserver,passwordFiledObserver,(obj1,obj2) -> {
-                    List<ObservableField<String>> list = new ArrayList<>();
+                    List<String> list = new ArrayList<>();
                     list.add(obj1);
                     list.add(obj2);
                     return list;})
                 .subscribeOn(Schedulers.computation())
                 .map((item) -> {
-                    if(item.get(0).get().length() != 0 && item.get(1).get().length() != 0) {
+                    if(item.get(0).length() != 0 && item.get(1).length() != 0) {
                         return true;
                     }
                     else {

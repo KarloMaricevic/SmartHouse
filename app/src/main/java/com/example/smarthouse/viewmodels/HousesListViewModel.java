@@ -24,14 +24,14 @@ public class HousesListViewModel extends AuthViewModel {
     Repository repository;
 
     ObservableField<String> userQuery;
-    Observable<ObservableField<String>> userQueryObservable;
+    Observable<String> userQueryObservable;
 
 
     @Inject
     HousesListViewModel(Repository repository, SharedPreferencesRepository shearedPrefrencesRepository) {
         super(repository, shearedPrefrencesRepository);
         this.repository = repository;
-        userQuery = new ObservableField<>();
+        userQuery = new ObservableField<>("");
         userQueryObservable = MakeObservable.makeObservebleForString(userQuery);
     }
 
@@ -41,14 +41,16 @@ public class HousesListViewModel extends AuthViewModel {
     {
 
         Observable<List<UsersHouseInfo>> newUsersHausesObservable = getUsernameObservable()
-                .switchMap((username) -> repository.getUsersHouses(username).toObservable());
+                .switchMap((username) -> {
+                        return repository.getUsersHouses(username).toObservable();
+                });
 
         return Observable
                 .combineLatest(newUsersHausesObservable,userQueryObservable, (userHouseList,queryString) -> {
                     List<UsersHouseInfo> newList = new ArrayList<>();
-                    if(queryString.get() != null && !queryString.get().equals("")) {
+                    if(queryString != null && !queryString.equals("")) {
                         for (UsersHouseInfo usersHauses : userHouseList) {
-                            if (usersHauses.getName().contains(queryString.get())) {
+                            if (usersHauses.getName().toLowerCase().contains(queryString.toLowerCase())) {
                                 newList.add(usersHauses);
                             }
                         }

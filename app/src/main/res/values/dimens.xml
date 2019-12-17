@@ -26,4 +26,36 @@
     <!-- dimenstion for CardView in HouseItemLayout -->
 
     <dimen name="card_corner_radius">12dp</dimen>
+
+
+    <!--RoomsNameItem-->
+
+    <dimen name="itemTextViewPadding">5dp</dimen>
+    <dimen name="itemTextSize">15sp</dimen>
+
+
+
+    <!--RoomsFragment-->
+    <dimen name="drawerViewWidth">260dp</dimen>
+
+
+    <!--RoomsToolbar-->
+    <dimen name="toolbarElevation">4dp</dimen>
+    <dimen name="toolbarHight">50dp</dimen>
+    <dimen name="toolbarContentInsetStart">0dp</dimen>
+
+
+    <!-- OptionRecyclerView margins -->
+    <dimen name="optionRecyclerViewMarginTop">26dp</dimen>
+    <dimen name="optionRecyclerViewMarginStart">26dp</dimen>
+    <dimen name="optionRecyclerViewMarginEnd">26dp</dimen>
+
+
+    <!--OptionChild dimensions  -->
+    <dimen name="textViewOptionParentTextSize">20sp</dimen>
+    <dimen name="textViewOptionPadding">16dp</dimen>
+    <dimen name="textViewOptionChildTextSize">18sp</dimen>
+
+
+
 </resources>

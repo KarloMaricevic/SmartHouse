@@ -3,6 +3,10 @@
     <!-- Integers for HouseItem -->
     <integer name="grid_columns">2</integer>
 
+    <!-- valuesForOptionsAndChildrenMargins -->
+    <integer name="parentVerticalSpaceHeight">12</integer>
+    <integer name="childVerticalSpaceHeight">25</integer>
+
 
 
 </resources>
