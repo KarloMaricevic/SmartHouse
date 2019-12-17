@@ -21,7 +21,6 @@ import javax.inject.Inject;
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomNameViewHolder> {
 
     List<RoomInfo> data;
-    Integer selected;
     String selectedRoomId;
 
     INavigation listener;
@@ -30,7 +29,6 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomNa
     @Inject
     public RoomListAdapter(INavigation iNavigation) {
         data = new ArrayList<>();
-        selected = null;
         this.listener = iNavigation;
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -24,6 +25,19 @@
 
         </androidx.appcompat.widget.SearchView>
 
+
+        <TextView
+            android:id="@+id/noRoomsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This house doesn't have any rooms"
+            android:textColor="@color/ErrorTextColor"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="72dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/roomsSearchView">
+
+        </TextView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/navigationRecyclerView"

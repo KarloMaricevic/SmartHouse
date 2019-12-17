@@ -42,7 +42,7 @@ public class HousesListViewModel extends AuthViewModel {
 
         Observable<List<UsersHouseInfo>> newUsersHausesObservable = getUsernameObservable()
                 .switchMap((username) -> {
-                        return repository.getUsersHouses(username).toObservable();
+                    return repository.getUserHouses(username).toObservable();
                 });
 
         return Observable

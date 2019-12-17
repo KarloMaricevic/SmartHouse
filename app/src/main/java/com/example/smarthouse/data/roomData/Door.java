@@ -50,7 +50,7 @@ public class Door implements Comparable<Door> {
 
     @Override
     public int compareTo(Door door) {
-        return 0;
+            return 0;
     }
 
 

@@ -41,7 +41,7 @@ public class SharedPreferencesRepository {
                     preferences.registerOnSharedPreferenceChangeListener(listener);
                 }))
                 .filter((key) ->key.equals(appContext.getString(R.string.username)))
-                .concatMap((key) -> Observable.just(preferences.getString(appContext.getString(R.string.username), "")))
+                .map((key) -> preferences.getString(appContext.getString(R.string.username), ""))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -61,7 +61,7 @@ public class SharedPreferencesRepository {
                     preferences.registerOnSharedPreferenceChangeListener(listener);
                 }))
                 .filter((key) -> key.equals(appContext.getString(R.string.password)))
-                .concatMap((key) -> Observable.just(preferences.getString(appContext.getString(R.string.password), "")))
+                .map((key) -> preferences.getString(appContext.getString(R.string.password), ""))
                 .subscribeOn(Schedulers.io());
 
     }

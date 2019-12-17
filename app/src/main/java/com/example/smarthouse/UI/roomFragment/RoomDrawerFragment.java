@@ -108,7 +108,14 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
                 .subscribe(
                         (roomList) ->
                         {
-                            adapter.changeData(roomList);
+                            if(roomList.isEmpty())
+                            {
+                                binding.noRoomsTextView.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                binding.noRoomsTextView.setVisibility(View.INVISIBLE);
+                                adapter.changeData(roomList);
+                            }
                         },
                         (e) -> Log.e("DrawerRecyclerError: ",e.getMessage()));
         addDisposables(roomListFiltredDisposable);
