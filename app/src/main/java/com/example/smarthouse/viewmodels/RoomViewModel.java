@@ -39,6 +39,10 @@ public class RoomViewModel extends AuthViewModel {
     Observable<List<RoomInfo>> roomInfoListObservable;
 
 
+
+    List<String> roomInfoIdChosenOrder;
+
+
     @Inject
     RoomViewModel(Repository repository, SharedPreferencesRepository shearedPrefrencesRepository,Context appContext) {
         super(repository, shearedPrefrencesRepository);
@@ -57,6 +61,9 @@ public class RoomViewModel extends AuthViewModel {
         chosenRoomIdObservable = MakeObservable.makeObservebleForString(chosenRoomId).cacheWithInitialCapacity(1);
 
         roomInfoListObservable = houseIdObservable.switchMap((houseIdObservable) -> repository.getHousesRooms(houseIdObservable).toObservable());
+
+        roomInfoIdChosenOrder = new ArrayList<>();
+
     }
 
     public Observable<String> getChosenRoomNameObservable() {
@@ -138,6 +145,15 @@ public class RoomViewModel extends AuthViewModel {
     }
 
     public void setChosenRoomId(String chosenRoomInfoId) {
+
+        if(!roomInfoIdChosenOrder.get(roomInfoIdChosenOrder.size()-1).equals(chosenRoomInfoId)) {
+            for (int i = 0; i < roomInfoIdChosenOrder.size() - 1; i++) {
+                if (chosenRoomInfoId.equals(roomInfoIdChosenOrder.get(i))) {
+                    roomInfoIdChosenOrder.remove(i);
+                }
+            }
+            roomInfoIdChosenOrder.add(chosenRoomInfoId);
+        }
         this.chosenRoomId.set(chosenRoomInfoId);
     }
 
@@ -153,4 +169,44 @@ public class RoomViewModel extends AuthViewModel {
     public String getChosenRoomId() {
         return chosenRoomId.get();
     }
+
+
+    public List<String> getRoomInfoIdChosenOrder() {
+        return roomInfoIdChosenOrder;
+    }
+
+    public void putRoomInfoIdChosenOrder(String roomInfoIdChosenOrder) {
+        this.roomInfoIdChosenOrder.add(roomInfoIdChosenOrder);
+    }
+
+    public Observable<Integer> getRoomIdPositionForBackNavigation() {
+         return roomInfoListObservable
+                 .take(1)
+                 .map(
+                 (roomInfoList) -> {
+                     if (roomInfoList.isEmpty() || roomInfoList == null || roomInfoIdChosenOrder.isEmpty()) {
+                         return new Integer(-1);
+                     }
+
+                     for (int i = roomInfoIdChosenOrder.size() -1 ; i >= 0; i--) {
+                         for (int j = 0; j < roomInfoList.size(); j++) {
+                                if(roomInfoList.get(j).getRoomId().equals(roomInfoIdChosenOrder.get(i))){
+                                    return new Integer(i-1);
+                             }
+                         }
+                     }
+                     return new Integer(-1);
+                 });
+    }
+
+    public void setUpRoomIdFromBackNavigation(Integer roomIdIndex)
+    {
+         int i = roomInfoIdChosenOrder.size()-1;
+         for(;i>roomIdIndex;i--)
+         {
+             roomInfoIdChosenOrder.remove(i);
+         }
+         chosenRoomId.set(roomInfoIdChosenOrder.get(i));
+    }
+
 }

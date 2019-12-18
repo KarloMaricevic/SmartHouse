@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -14,6 +15,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import com.example.smarthouse.BaseAplication;
 import com.example.smarthouse.R;
 import com.example.smarthouse.UI.BaseFragment;
+import com.example.smarthouse.UI.LogInFragmentDirections;
 import com.example.smarthouse.databinding.FragmentRoomBinding;
 import com.example.smarthouse.viewmodels.RoomViewModel;
 import com.example.smarthouse.viewmodels.ViewModelProviderFactory;
@@ -70,6 +73,24 @@ public class RoomFragment extends BaseFragment {
 
         viewModel = ViewModelProviders.of(this,viewModelFactory).get(RoomViewModel.class);
 
+        //region AuthViewModel
+
+        Disposable authStateDisposable = viewModel.getAuthState()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((authState) -> {
+                            switch (authState) {
+
+                                case UNAUTHENTICATED:
+                                    ((BaseAplication) getActivity().getApplication()).releseAuthComponent();
+                                    Navigation.findNavController(binding.getRoot()).navigate(LogInFragmentDirections.actionGlobalLogInFragment());
+                                    break;
+                            }
+                        },
+                        (e) -> Log.e("AuthObserverError:" ,e.getMessage()));
+
+        //endregion
+
+
         viewModel.setHouseId(RoomFragmentArgs.fromBundle(getArguments()).getHouseId());
 
         setUpToolbar();
@@ -84,7 +105,7 @@ public class RoomFragment extends BaseFragment {
                         (hasChosen) -> binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED),
                         (e) ->{});
 
-        addDisposables(hasUserChosenRoomOnceDisposable);
+        addDisposables(authStateDisposable,hasUserChosenRoomOnceDisposable);
 
         return binding.getRoot();
     }
@@ -122,6 +143,8 @@ public class RoomFragment extends BaseFragment {
                         (e) ->Log.e("TitleError: ", e.getMessage())
                 );
 
+
+        setBackNavigation();
         addDisposables(chosenRoomidDisposable,choosenRoomNameDisposable);
 
 
@@ -158,4 +181,32 @@ public class RoomFragment extends BaseFragment {
         outState.putString("roomId",viewModel.getChosenRoomId());
 
     }
+
+    void setBackNavigation() {
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                viewModel.getRoomIdPositionForBackNavigation().subscribe(
+                        (index) ->
+                        {
+                            if(index == -1)
+                            {
+                                Navigation.findNavController(binding.getRoot()).navigate(RoomFragmentDirections.actionRoomFragmentToHousesListFragmnet());
+                            }
+                            else
+                            {
+                                viewModel.setUpRoomIdFromBackNavigation(index);
+                            }
+                        }
+
+                );
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
+
+    }
 }
+
+

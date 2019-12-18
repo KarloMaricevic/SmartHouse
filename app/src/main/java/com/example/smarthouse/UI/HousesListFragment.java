@@ -75,7 +75,7 @@ public class HousesListFragment extends BaseFragment {
 
                         case UNAUTHENTICATED:
                             ((BaseAplication) getActivity().getApplication()).releseAuthComponent();
-                            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_logInFragment);
+                            Navigation.findNavController(binding.getRoot()).navigate(LogInFragmentDirections.actionGlobalLogInFragment());
                             break;
                     }
                 },

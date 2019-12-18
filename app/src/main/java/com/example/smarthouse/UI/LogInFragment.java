@@ -82,7 +82,7 @@ public class LogInFragment extends BaseFragment {
                     switch (logInPosition) {
                         case AUTHENTICATED_AND_SET_UP:
                             hideKeyboard(getContext(),getActivity().getCurrentFocus());
-                            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_logInFragment_to_housesListFragmnet);
+                            Navigation.findNavController(binding.getRoot()).navigate(LogInFragmentDirections.actionLogInFragmentToHousesListFragmnet());
                             break;
                         case AUTHENTICATED_AND_SETTING_UP:
                             viewModel.saveCredencials(getContext(),getViewLifecycleOwner());

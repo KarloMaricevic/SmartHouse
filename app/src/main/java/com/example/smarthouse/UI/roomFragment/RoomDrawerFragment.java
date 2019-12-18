@@ -86,7 +86,20 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
 
                 });
 
-        addDisposables(qeryTextChangeDisposable);
+
+        Disposable selectedRoomIdDisposable  = viewModel
+                .getChosenRoomIdObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (roomId) ->
+                        {
+                            adapter.setSelected(roomId);
+                        },
+                        (e) -> {}
+                );
+
+
+        addDisposables(selectedRoomIdDisposable,qeryTextChangeDisposable);
 
         return binding.getRoot();
     }
@@ -94,7 +107,6 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
     @Override
     public void onViewClick(String roomId) {
         viewModel.setChosenRoomId(roomId);
-        adapter.setSelected(roomId);
     }
 
 
@@ -120,4 +132,8 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
                         (e) -> Log.e("DrawerRecyclerError: ",e.getMessage()));
         addDisposables(roomListFiltredDisposable);
     }
+
+
+
+
 }

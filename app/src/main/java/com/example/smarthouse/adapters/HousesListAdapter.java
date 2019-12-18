@@ -82,12 +82,6 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
     }
 
 
-
-
-
-
-
-
     public void setUsersHausesList(List<UsersHouseInfo> usersHausesList) {
         this.usersHausesList = usersHausesList;
     }
@@ -109,11 +103,6 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
                     {
                         HousesListFragmentDirections.ActionHousesListFragmnetToRoomFragment action =
                                 HousesListFragmentDirections.actionHousesListFragmnetToRoomFragment(usersHouseInfo.getHauseId(),usersHouseInfo.getName());
-
-  /*                      Bundle bundle =  new Bundle();
-                        bundle.putString("houseId",usersHouseInfo.getHauseId());
-                        bundle.putString("houseName",usersHouseInfo.getName());*/
-                        //Navigation.findNavController(view).navigate(R.id.action_housesListFragmnet_to_roomFragment,bundle);
                         Navigation.findNavController(view).navigate(action);
                     }
 
@@ -126,10 +115,6 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
             drawable.into(binding.houseImage);
             binding.executePendingBindings();
         }
-
-
-
-
     }
 
 }
