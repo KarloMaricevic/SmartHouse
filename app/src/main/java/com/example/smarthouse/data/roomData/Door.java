@@ -4,7 +4,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-public class Door implements Comparable<Door> {
+import java.security.InvalidParameterException;
+
+public class Door implements IdComparable,Comparable<Door> {
 
     protected String doorId;
     protected Boolean locked;
@@ -68,6 +70,20 @@ public class Door implements Comparable<Door> {
         {
             Log.e("Clone exception: ",e.getMessage());
             return null;
+        }
+    }
+
+
+    @Override
+    public boolean compereById(IdComparable idComparable) {
+        if (!(idComparable instanceof Door)) {
+            throw new InvalidParameterException("Argument is not type of Door");
+        }
+        if (((Door) idComparable).doorId.equals(this.doorId)){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

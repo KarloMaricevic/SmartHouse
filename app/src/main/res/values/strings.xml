@@ -52,4 +52,24 @@
     <!-- fragment_room_details -->
     <string name="noRoomDetails">Room doesn\'t have anything to control</string>
 
+
+    <!--HousesListAdapter -->
+    <string name="changePictureMenuId">changePicture</string>
+    <string name="changePictureMenuTitle">Change picture</string>
+
+    <string name="withCameraMenuId">withCamera</string>
+    <string name="withCameraMenuTitle">With camera</string>
+
+    <string name="withStorageMenuId">withStorag</string>
+    <string name="withStorageMenuTitle">From gallery</string>
+
+    <string name="changeNameMenuId">changeName</string>
+    <string name="changeNameMenuTitle">Change name</string>
+
+
+    <!-- dialog change Name -->
+
+    <string name="hindDialogEditText">New House Name</string>
+
+
 </resources>

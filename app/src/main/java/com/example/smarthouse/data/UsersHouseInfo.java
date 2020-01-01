@@ -1,6 +1,11 @@
 package com.example.smarthouse.data;
 
-public class UsersHouseInfo {
+import com.example.smarthouse.data.roomData.Door;
+import com.example.smarthouse.data.roomData.IdComparable;
+
+import java.security.InvalidParameterException;
+
+public class UsersHouseInfo implements IdComparable {
     String name;
     String hauseId;
     String picture_url;
@@ -42,5 +47,18 @@ public class UsersHouseInfo {
 
     public void setPicture_updated(String picture_updated) {
         this.picture_updated = picture_updated;
+    }
+
+    @Override
+    public boolean compereById(IdComparable idComparable) {
+        if (!(idComparable instanceof UsersHouseInfo)) {
+            throw new InvalidParameterException("Argument is not type of Door");
+        }
+        if (((UsersHouseInfo) idComparable).getHauseId().equals(this.hauseId)){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.smarthouse.UI;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -23,4 +24,10 @@ public abstract class BaseFragment extends Fragment {
         compositeDisposable.clear();
         super.onStop();
     }
+
+    public void clearAllDisposables()
+    {
+        compositeDisposable.clear();
+    }
+
 }

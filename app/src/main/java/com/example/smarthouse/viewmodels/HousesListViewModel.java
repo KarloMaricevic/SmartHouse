@@ -1,22 +1,23 @@
 package com.example.smarthouse.viewmodels;
 
+import android.graphics.Bitmap;
+
 import androidx.databinding.ObservableField;
 
 import com.example.smarthouse.repositorys.Repository;
 import com.example.smarthouse.repositorys.SharedPreferencesRepository;
 import com.example.smarthouse.data.UsersHouseInfo;
 import com.example.smarthouse.utils.MakeObservable;
+import com.example.smarthouse.utils.PictureResize;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
-
-
-
-
+import io.reactivex.Single;
 
 
 public class HousesListViewModel extends AuthViewModel {
@@ -70,5 +71,18 @@ public class HousesListViewModel extends AuthViewModel {
 
     public void setUserQuery(String userQuery) {
         this.userQuery.set(userQuery);
+    }
+
+
+    public Single<String> saveBitmapToDatabase(Bitmap bitmap, String houseId)
+    {
+        Bitmap resizedBitmap = PictureResize.getResizedBitmap(bitmap, 800, 533);
+        return repository.changeHousePicture(resizedBitmap,currentUsername,houseId);
+    }
+
+
+    public Completable changeHouseName(String newName, String houseId)
+    {
+       return repository.changeHouseName(newName,currentUsername,houseId);
     }
 }

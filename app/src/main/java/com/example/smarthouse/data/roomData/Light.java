@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.database.PropertyName;
 
-public class Light implements Comparable<Light> {
+import java.security.InvalidParameterException;
+
+public class Light implements Comparable<Light>,IdComparable {
 
     protected String lightId;
     protected String name;
@@ -70,6 +72,19 @@ public class Light implements Comparable<Light> {
         {
             Log.e("Clone exception ",e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public boolean compereById(IdComparable idComparable) {
+        if (!(idComparable instanceof Light)) {
+            throw new InvalidParameterException("Argument is not type of Light");
+        }
+        if (((Light) idComparable).lightId.equals(this.lightId)){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

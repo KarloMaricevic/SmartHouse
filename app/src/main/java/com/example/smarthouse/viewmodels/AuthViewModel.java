@@ -19,6 +19,7 @@ public abstract class AuthViewModel extends ViewModel {
         AUTHENTICATED,
     }
 
+    protected String  currentUsername;
 
     Observable<String> usernameObservable;
     Observable<String> passwordObservable;
@@ -29,6 +30,13 @@ public abstract class AuthViewModel extends ViewModel {
     {
         usernameObservable = shearedPrefrencesRepository.getUseranmeObservable();
         passwordObservable = shearedPrefrencesRepository.getPasswordObservable();
+
+        usernameObservable.subscribe(
+                (username) -> {
+                    this.currentUsername = username;
+                },
+                (e) -> {}
+        );
 
         dbPassword = usernameObservable
                 .switchMap((useranme) -> repository.getUsersCredencilas(useranme).toObservable());

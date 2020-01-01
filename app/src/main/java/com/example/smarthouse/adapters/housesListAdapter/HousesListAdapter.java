@@ -1,9 +1,13 @@
-package com.example.smarthouse.adapters;
+package com.example.smarthouse.adapters.housesListAdapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -32,17 +36,21 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
 
     Context appContext;
     List<UsersHouseInfo> usersHausesList;
+    IOption iOption;
+
 
     @Inject
-    public HousesListAdapter(Context context) {
+    public HousesListAdapter(Context context,IOption iOption) {
         usersHausesList = null;
         appContext = context;
+        this.iOption = iOption;
     }
 
-    public HousesListAdapter(List<UsersHouseInfo> usersHausesList,Context context)
+    public HousesListAdapter(List<UsersHouseInfo> usersHausesList,Context context,IOption iOption)
     {
         this.usersHausesList = usersHausesList;
         appContext = context;
+        this.iOption = iOption;
     }
 
 
@@ -52,7 +60,7 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
     @Override
     public HouseItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         HouseItemBinding binding = HouseItemBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        HouseItemViewHolder vh = new HouseItemViewHolder(binding);
+        HouseItemViewHolder vh = new HouseItemViewHolder(binding,iOption);
         return vh;
     }
 
@@ -86,12 +94,21 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
         this.usersHausesList = usersHausesList;
     }
 
-    public static class  HouseItemViewHolder extends RecyclerView.ViewHolder
+    public static class  HouseItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener
     {
         HouseItemBinding binding;
+        private final MenuItem.OnMenuItemClickListener onMenuItemClickListener;
+        IOption iOption;
 
-        public HouseItemViewHolder(HouseItemBinding binding) {
+
+
+        public HouseItemViewHolder(HouseItemBinding binding,IOption iOption) {
             super(binding.getRoot());
+            this.iOption = iOption;
+            onMenuItemClickListener  = (menuItem) -> {
+                iOption.onMenuItemClicked(menuItem.getItemId(),binding.getUsersHouse().getHauseId());
+                return true;
+            };
             this.binding = binding;
         }
 
@@ -107,6 +124,8 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
                     }
 
             );
+
+            binding.getRoot().setOnCreateContextMenuListener(this);
             binding.executePendingBindings();
         }
 
@@ -115,6 +134,24 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
             drawable.into(binding.houseImage);
             binding.executePendingBindings();
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            SubMenu subMenu = contextMenu.addSubMenu(Menu.NONE,R.string.changePictureMenuId,1,R.string.changePictureMenuTitle);
+            subMenu.clearHeader();
+            MenuItem withCameraMenuItem = subMenu.add(Menu.NONE,R.string.withCameraMenuId,1,R.string.withCameraMenuTitle);
+            MenuItem withStorageMenuItem = subMenu.add(Menu.NONE,R.string.withStorageMenuId,2,R.string.withStorageMenuTitle);
+            MenuItem chanegeNameMenuItem = contextMenu.add(Menu.NONE,R.string.changeNameMenuId,2,R.string.changeNameMenuTitle);
+            withCameraMenuItem.setOnMenuItemClickListener(onMenuItemClickListener);
+            withStorageMenuItem.setOnMenuItemClickListener(onMenuItemClickListener);
+            chanegeNameMenuItem.setOnMenuItemClickListener(onMenuItemClickListener);
+        }
+
+
+
+
+
+
     }
 
 }

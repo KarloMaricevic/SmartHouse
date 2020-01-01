@@ -57,5 +57,10 @@
     <dimen name="textViewOptionChildTextSize">18sp</dimen>
 
 
+    <!-- dialog change Name -->
+
+    <dimen name="editTextDialogPaddingTop">16dp</dimen>
+    <dimen name="editTextDialogPaddingElse">4dp</dimen>
+
 
 </resources>

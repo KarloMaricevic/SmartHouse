@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.database.PropertyName;
 
-public class Temperature implements Comparable<Temperature> {
+import java.security.InvalidParameterException;
+
+public class Temperature implements Comparable<Temperature>,IdComparable {
     protected String name;
     @PropertyName("temeperatureId")
     public String temperatureId;
@@ -71,4 +73,19 @@ public class Temperature implements Comparable<Temperature> {
             return null;
         }
     }
+
+    @Override
+    public boolean compereById(IdComparable idComparable) {
+        if (!(idComparable instanceof Temperature)) {
+            throw new InvalidParameterException("Argument is not type of Door");
+        }
+        if (((Temperature) idComparable).temperatureId.equals(this.temperatureId)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
 }
