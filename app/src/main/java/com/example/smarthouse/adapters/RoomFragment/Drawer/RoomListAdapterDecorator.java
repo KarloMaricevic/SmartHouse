@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RoomListAdapterDecorator extends RecyclerView.ItemDecoration {
 
-    private final int bottomItemMargin;
-    private final int leftItemMargin;
+    private final int mBottomItemMargin;
+    private final int mLeftItemMargin;
 
     public RoomListAdapterDecorator(int bottomItemMargin, int leftItemMargin) {
-        this.bottomItemMargin = bottomItemMargin;
-        this.leftItemMargin = leftItemMargin;
+        this.mBottomItemMargin = bottomItemMargin;
+        this.mLeftItemMargin = leftItemMargin;
     }
 
     @Override
@@ -21,9 +21,9 @@ public class RoomListAdapterDecorator extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         if( parent.getChildAdapterPosition(view) != 0)
         {
-            outRect.bottom =bottomItemMargin;
+            outRect.bottom = mBottomItemMargin;
         }
 
-        outRect.left = leftItemMargin;
+        outRect.left = mLeftItemMargin;
     }
 }

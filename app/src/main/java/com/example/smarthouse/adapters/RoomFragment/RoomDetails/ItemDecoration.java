@@ -10,23 +10,23 @@ import com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders.Opti
 
 public class ItemDecoration extends RecyclerView.ItemDecoration {
 
-    private final int verticalSpaceHeight;
-    private final int childVerticalSpaceHeight;
+    private final int mVerticalSpaceHeight;
+    private final int mChildVerticalSpaceHeight;
 
 
     public ItemDecoration(int parentVerticalSpaceHeight,int childVerticalSpaceHeight) {
-        this.verticalSpaceHeight = parentVerticalSpaceHeight;
-        this.childVerticalSpaceHeight = childVerticalSpaceHeight;
+        this.mVerticalSpaceHeight = parentVerticalSpaceHeight;
+        this.mChildVerticalSpaceHeight = childVerticalSpaceHeight;
     }
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         RecyclerView.ViewHolder viewHolder = parent.getChildViewHolder(view);
         if(viewHolder instanceof OptionsViewHolder){
-            outRect.bottom = verticalSpaceHeight;
+            outRect.bottom = mVerticalSpaceHeight;
         }
         else {
-            outRect.bottom = childVerticalSpaceHeight;
+            outRect.bottom = mChildVerticalSpaceHeight;
         }
     }
 }

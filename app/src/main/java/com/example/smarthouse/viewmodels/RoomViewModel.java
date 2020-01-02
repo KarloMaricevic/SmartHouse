@@ -19,55 +19,56 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class RoomViewModel extends AuthViewModel {
 
 
-    Repository repository;
+    Repository mRepository;
 
-    Context appContext;
+    Context mAppContext;
 
-    ObservableField<String> houseId;
-    ObservableField<String> chosenRoomId;
-    ObservableField<String> drawerQueryText;
+    ObservableField<String> mHouseId;
+    ObservableField<String> mChosenRoomId;
+    ObservableField<String> mDrawerQueryText;
 
-    Observable<String> houseIdObservable;
-    Observable<String> chosenRoomIdObservable;
-    Observable<String> drawerQueryTextObservable;
+    Observable<String> mHouseIdObservable;
+    Observable<String> mChosenRoomIdObservable;
+    Observable<String> mDrawerQueryTextObservable;
 
-    Observable<List<RoomInfo>> roomInfoListObservable;
+    Observable<List<RoomInfo>> mRoomInfoListObservable;
 
 
 
-    List<String> roomInfoIdChosenOrder;
+    List<String> mRoomInfoIdChosenOrder;
 
 
     @Inject
     RoomViewModel(Repository repository, SharedPreferencesRepository shearedPrefrencesRepository,Context appContext) {
         super(repository, shearedPrefrencesRepository);
-        this.repository = repository;
-        this.appContext = appContext;
+        this.mRepository = repository;
+        this.mAppContext = appContext;
 
-        houseId = new ObservableField<>();
-        chosenRoomId = new ObservableField<>();
-        drawerQueryText = new ObservableField<>();
+        mHouseId = new ObservableField<>();
+        mChosenRoomId = new ObservableField<>();
+        mDrawerQueryText = new ObservableField<>();
 
 
-        drawerQueryTextObservable = MakeObservable.makeObservebleForString(drawerQueryText);
+        mDrawerQueryTextObservable = MakeObservable.makeObservebleForString(mDrawerQueryText);
 
-        houseIdObservable = MakeObservable.makeObservebleForString(houseId).cacheWithInitialCapacity(1);
+        mHouseIdObservable = MakeObservable.makeObservebleForString(mHouseId).cacheWithInitialCapacity(1);
 
-        chosenRoomIdObservable = MakeObservable.makeObservebleForString(chosenRoomId).cacheWithInitialCapacity(1);
+        mChosenRoomIdObservable = MakeObservable.makeObservebleForString(mChosenRoomId).cacheWithInitialCapacity(1);
 
-        roomInfoListObservable = houseIdObservable.switchMap((houseIdObservable) -> repository.getHousesRooms(houseIdObservable).toObservable());
+        mRoomInfoListObservable = mHouseIdObservable.switchMap((houseIdObservable) -> repository.getHousesRooms(houseIdObservable).toObservable());
 
-        roomInfoIdChosenOrder = new ArrayList<>();
+        mRoomInfoIdChosenOrder = new ArrayList<>();
 
     }
 
     public Observable<String> getChosenRoomNameObservable() {
-        return Observable.combineLatest(chosenRoomIdObservable,roomInfoListObservable,(roomId, roomInfoList) -> {
+        return Observable.combineLatest(mChosenRoomIdObservable, mRoomInfoListObservable,(roomId, roomInfoList) -> {
                     for(RoomInfo roomInfo : roomInfoList)
                     {
                         if(roomInfo.getRoomId().equals(roomId))
@@ -80,7 +81,7 @@ public class RoomViewModel extends AuthViewModel {
     }
 
     public Observable<List<RoomInfo>> roomListFilteredObservable() {
-        return Observable.combineLatest(roomInfoListObservable, drawerQueryTextObservable, (roomInfoList, queryText) -> {
+        return Observable.combineLatest(mRoomInfoListObservable, mDrawerQueryTextObservable, (roomInfoList, queryText) -> {
             if (queryText.equals("")) {
                 return roomInfoList;
             } else {
@@ -96,8 +97,8 @@ public class RoomViewModel extends AuthViewModel {
     }
 
     public Observable<List<Options>> getObservableDataForRoomDetailsAdapter() {
-         return chosenRoomIdObservable
-                    .switchMap((roomInfoId) -> repository.getRoomDetails(roomInfoId).toObservable())
+         return mChosenRoomIdObservable
+                    .switchMap((roomInfoId) -> mRepository.getRoomDetails(roomInfoId).toObservable())
                     .map((room) -> {
                         List<Options> options = new ArrayList<>();
                         ArrayList<Comparable> comparableList = new ArrayList<>();
@@ -107,7 +108,7 @@ public class RoomViewModel extends AuthViewModel {
                             {
                                 comparableList.add(door.clone());
                             }
-                            options.add(new Options(appContext.getString(R.string.doorOption),(List<Comparable>) comparableList.clone()));
+                            options.add(new Options(mAppContext.getString(R.string.doorOption),(List<Comparable>) comparableList.clone()));
                             comparableList.clear();
                         }
                         if(room.getLightsList().size() != 0)
@@ -116,7 +117,7 @@ public class RoomViewModel extends AuthViewModel {
                             {
                                 comparableList.add(light.clone());
                             }
-                            options.add(new Options(appContext.getString(R.string.lightOption),(List<Comparable>) comparableList.clone()));
+                            options.add(new Options(mAppContext.getString(R.string.lightOption),(List<Comparable>) comparableList.clone()));
                             comparableList.clear();
                         }
                         if(room.getTemperatureList().size() != 0)
@@ -125,7 +126,7 @@ public class RoomViewModel extends AuthViewModel {
                             {
                                 comparableList.add(temperature.clone());
                             }
-                            options.add(new Options(appContext.getString(R.string.temperatureOption),(List<Comparable>) comparableList.clone()));
+                            options.add(new Options(mAppContext.getString(R.string.temperatureOption),(List<Comparable>) comparableList.clone()));
                             comparableList.clear();
                         }
                         return options;
@@ -133,64 +134,57 @@ public class RoomViewModel extends AuthViewModel {
     }
 
     public Observable<Boolean> getHasUserChosenRoomOnceObservable() {
-        return chosenRoomIdObservable.take(1).map((roomInfo -> true));
+        return mChosenRoomIdObservable.take(1).map((roomInfo -> true));
     }
 
-    public Observable<String> getChosenRoomIdObservable() {
-        return chosenRoomIdObservable;
+    public Observable<String> getmChosenRoomIdObservable() {
+        return mChosenRoomIdObservable;
     }
 
-    public void setHouseId(String houseId) {
-        this.houseId.set(houseId);
+    public void setmHouseId(String mHouseId) {
+        this.mHouseId.set(mHouseId);
     }
 
-    public void setChosenRoomId(String chosenRoomInfoId) {
+    public void setmChosenRoomId(String chosenRoomInfoId) {
 
-        if(!roomInfoIdChosenOrder.get(roomInfoIdChosenOrder.size()-1).equals(chosenRoomInfoId)) {
-            for (int i = 0; i < roomInfoIdChosenOrder.size() - 1; i++) {
-                if (chosenRoomInfoId.equals(roomInfoIdChosenOrder.get(i))) {
-                    roomInfoIdChosenOrder.remove(i);
-                }
-            }
-            roomInfoIdChosenOrder.add(chosenRoomInfoId);
-        }
-        this.chosenRoomId.set(chosenRoomInfoId);
+        addRoomIdToBackList(chosenRoomInfoId);
+        this.mChosenRoomId.set(chosenRoomInfoId);
     }
 
 
-    public void setDrawerQueryText(String drawerQueryText) {
-        this.drawerQueryText.set(drawerQueryText);
+    public void setmDrawerQueryText(String mDrawerQueryText) {
+        this.mDrawerQueryText.set(mDrawerQueryText);
     }
 
-    public String getHouseId() {
-        return houseId.get();
+    public String getmHouseId() {
+        return mHouseId.get();
     }
 
-    public String getChosenRoomId() {
-        return chosenRoomId.get();
+    public String getmChosenRoomId() {
+        return mChosenRoomId.get();
     }
 
 
-    public List<String> getRoomInfoIdChosenOrder() {
-        return roomInfoIdChosenOrder;
+    public List<String> getmRoomInfoIdChosenOrder() {
+        return mRoomInfoIdChosenOrder;
     }
 
     public void putRoomInfoIdChosenOrder(String roomInfoIdChosenOrder) {
-        this.roomInfoIdChosenOrder.add(roomInfoIdChosenOrder);
+        this.mRoomInfoIdChosenOrder.add(roomInfoIdChosenOrder);
     }
 
     public Observable<Integer> getRoomIdPositionForBackNavigation() {
-         return roomInfoListObservable
+         return mRoomInfoListObservable
                  .take(1)
                  .map(
                  (roomInfoList) -> {
-                     if (roomInfoList.isEmpty() || roomInfoList == null || roomInfoIdChosenOrder.isEmpty()) {
+                     if (roomInfoList.isEmpty() || roomInfoList == null || mRoomInfoIdChosenOrder.isEmpty()) {
                          return new Integer(-1);
                      }
 
-                     for (int i = roomInfoIdChosenOrder.size() -1 ; i >= 0; i--) {
+                     for (int i = mRoomInfoIdChosenOrder.size() -1; i >= 0; i--) {
                          for (int j = 0; j < roomInfoList.size(); j++) {
-                                if(roomInfoList.get(j).getRoomId().equals(roomInfoIdChosenOrder.get(i))){
+                                if(roomInfoList.get(j).getRoomId().equals(mRoomInfoIdChosenOrder.get(i))){
                                     return new Integer(i-1);
                              }
                          }
@@ -199,14 +193,52 @@ public class RoomViewModel extends AuthViewModel {
                  });
     }
 
-    public void setUpRoomIdFromBackNavigation(Integer roomIdIndex)
-    {
-         int i = roomInfoIdChosenOrder.size()-1;
+    public void setUpRoomIdFromBackNavigation(Integer roomIdIndex) {
+         int i = mRoomInfoIdChosenOrder.size()-1;
          for(;i>roomIdIndex;i--)
          {
-             roomInfoIdChosenOrder.remove(i);
+             mRoomInfoIdChosenOrder.remove(i);
          }
-         chosenRoomId.set(roomInfoIdChosenOrder.get(i));
+         mChosenRoomId.set(mRoomInfoIdChosenOrder.get(i));
     }
+
+
+    private void  addRoomIdToBackList(String roomId) {
+        if(mRoomInfoIdChosenOrder.size()!=0)
+        {
+            if(!mRoomInfoIdChosenOrder.get(mRoomInfoIdChosenOrder.size()-1).equals(roomId)) {
+                for (int i = 0; i < mRoomInfoIdChosenOrder.size() - 1; i++) {
+                    if (roomId.equals(mRoomInfoIdChosenOrder.get(i))) {
+                        mRoomInfoIdChosenOrder.remove(i);
+                    }
+                }
+                mRoomInfoIdChosenOrder.add(roomId);
+            }
+        }
+        else {
+            mRoomInfoIdChosenOrder.add(roomId);
+        }
+    }
+
+
+    public Completable changeDoorLocked(boolean locked,Door door) {
+        String roomId = mRoomInfoIdChosenOrder.get(mRoomInfoIdChosenOrder.size() -1);
+        return mRepository.changeDoorLock(roomId,door.getDoorId(),locked);
+    }
+
+    public Completable changeLightOn(boolean turnOn,Light light){
+        String roomId = mRoomInfoIdChosenOrder.get(mRoomInfoIdChosenOrder.size() -1);
+        return mRepository.changeLight(roomId,light.getLightId(),turnOn);
+    }
+
+    public Completable changeRoomTemeperature(int value,Temperature temperature) {
+        String roomId = mRoomInfoIdChosenOrder.get(mRoomInfoIdChosenOrder.size() -1);
+        return mRepository.changeTargetedTemperature(roomId,temperature.getTemperatureId(),value);
+    }
+
+
+
+
+
 
 }

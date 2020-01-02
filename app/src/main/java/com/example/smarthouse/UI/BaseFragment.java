@@ -1,19 +1,18 @@
 package com.example.smarthouse.UI;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseFragment extends Fragment {
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     protected void addDisposables(Disposable... disposables)
     {
         for(Disposable disposable : disposables)
         {
-            compositeDisposable.add(disposable);
+            mCompositeDisposable.add(disposable);
         }
 
     }
@@ -21,13 +20,13 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onStop() {
-        compositeDisposable.clear();
+        mCompositeDisposable.clear();
         super.onStop();
     }
 
     public void clearAllDisposables()
     {
-        compositeDisposable.clear();
+        mCompositeDisposable.clear();
     }
 
 }

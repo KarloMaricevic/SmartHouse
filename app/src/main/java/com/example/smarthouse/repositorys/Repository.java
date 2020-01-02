@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 
 
 import com.example.smarthouse.data.roomData.Door;
-import com.example.smarthouse.data.roomData.IdComparable;
 import com.example.smarthouse.data.roomData.Light;
 import com.example.smarthouse.data.roomData.Room;
 import com.example.smarthouse.data.roomData.RoomInfo;
@@ -468,5 +467,29 @@ public class Repository {
         map.put("name",newName);
         return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
     }
+
+
+    public Completable changeTargetedTemperature(String roomId,String temperatureId,int targeted){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "temperatures/" + temperatureId + "/");
+        Map<String,Object> map = new HashMap<>();
+        map.put("targeted",targeted);
+        return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
+
+    }
+
+    public Completable changeLight(String roomId,String lightId,boolean targeted){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "lights/" + lightId + "/");
+        Map<String,Object> map = new HashMap<>();
+        map.put("targeted",targeted);
+        return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
+    }
+
+    public Completable changeDoorLock(String roomId,String doorId,boolean targeted) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "doors/" + doorId + "/");
+        Map<String,Object> map = new HashMap<>();
+        map.put("targeted",targeted);
+        return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
+    }
+
 
 }

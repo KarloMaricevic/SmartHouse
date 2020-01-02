@@ -34,23 +34,23 @@ import io.reactivex.schedulers.Schedulers;
 public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.HouseItemViewHolder> {
 
 
-    Context appContext;
-    List<UsersHouseInfo> usersHausesList;
-    IOption iOption;
+    Context mAppContext;
+    List<UsersHouseInfo> mUsersHausesList;
+    IOption mIOption;
 
 
     @Inject
     public HousesListAdapter(Context context,IOption iOption) {
-        usersHausesList = null;
-        appContext = context;
-        this.iOption = iOption;
+        mUsersHausesList = null;
+        mAppContext = context;
+        this.mIOption = iOption;
     }
 
     public HousesListAdapter(List<UsersHouseInfo> usersHausesList,Context context,IOption iOption)
     {
-        this.usersHausesList = usersHausesList;
-        appContext = context;
-        this.iOption = iOption;
+        this.mUsersHausesList = usersHausesList;
+        mAppContext = context;
+        this.mIOption = iOption;
     }
 
 
@@ -60,17 +60,17 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
     @Override
     public HouseItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         HouseItemBinding binding = HouseItemBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        HouseItemViewHolder vh = new HouseItemViewHolder(binding,iOption);
+        HouseItemViewHolder vh = new HouseItemViewHolder(binding, mIOption);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull HouseItemViewHolder holder, int position) {
-        UsersHouseInfo usersHauses = usersHausesList.get(position);
+        UsersHouseInfo usersHauses = mUsersHausesList.get(position);
         holder.bind(usersHauses);
 
         Observable.just(
-                Glide.with(appContext).load(usersHauses.getPicture_url()).centerCrop()
+                Glide.with(mAppContext).load(usersHauses.getPicture_url()).centerCrop()
                         .placeholder(R.drawable.ic_photo_blue_24dp)
                         .error(R.drawable.broken_image_black_24dp)
                         .fallback(R.drawable.ic_photo_blue_24dp)
@@ -86,12 +86,12 @@ public class HousesListAdapter extends RecyclerView.Adapter<HousesListAdapter.Ho
 
     @Override
     public int getItemCount() {
-        return usersHausesList !=null ? usersHausesList.size() : 0;
+        return mUsersHausesList !=null ? mUsersHausesList.size() : 0;
     }
 
 
-    public void setUsersHausesList(List<UsersHouseInfo> usersHausesList) {
-        this.usersHausesList = usersHausesList;
+    public void setmUsersHausesList(List<UsersHouseInfo> mUsersHausesList) {
+        this.mUsersHausesList = mUsersHausesList;
     }
 
     public static class  HouseItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener

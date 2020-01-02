@@ -20,27 +20,27 @@ import javax.inject.Inject;
 @PerFragment
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomNameViewHolder> {
 
-    List<RoomInfo> data;
-    String selectedRoomId;
+    List<RoomInfo> mData;
+    String mSelectedRoomId;
 
-    INavigation listener;
+    INavigation mListener;
 
 
     @Inject
     public RoomListAdapter(INavigation iNavigation) {
-        data = new ArrayList<>();
-        this.listener = iNavigation;
+        mData = new ArrayList<>();
+        this.mListener = iNavigation;
     }
 
 
     public void changeData(List<RoomInfo> data)
     {
-        this.data = data;
+        this.mData = data;
         notifyDataSetChanged();
     }
 
-    public List<RoomInfo> getData() {
-        return data;
+    public List<RoomInfo> getmData() {
+        return mData;
     }
 
 
@@ -49,16 +49,16 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomNa
     @Override
     public RoomNameViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RoomDrawerItemBinding binding = RoomDrawerItemBinding.inflate(LayoutInflater.from(parent.getContext()));
-        return new RoomNameViewHolder(binding,listener);
+        return new RoomNameViewHolder(binding, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RoomNameViewHolder holder, int position) {
-        RoomInfo roomInfo = data.get(position);
+        RoomInfo roomInfo = mData.get(position);
         holder.itemView.setTag(position);
-        if(selectedRoomId != null)
+        if(mSelectedRoomId != null)
         {
-            if(selectedRoomId.equals(getData().get(position).getRoomId()))
+            if(mSelectedRoomId.equals(getmData().get(position).getRoomId()))
             {
                 holder.bind(roomInfo,true);
             }
@@ -75,12 +75,12 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomNa
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     public void setSelected(String roomId)
     {
-        selectedRoomId = roomId;
+        mSelectedRoomId = roomId;
         notifyDataSetChanged();
     }
 

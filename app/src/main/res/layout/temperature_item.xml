@@ -6,12 +6,18 @@
         <variable
             name="temperature"
             type="com.example.smarthouse.data.roomData.Temperature" />
+
+        <variable
+            name="onClickListner"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/lightCardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{onClickListner}"
+        >
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +41,7 @@
 
             <TextView
                 android:id="@+id/value"
-                android:text="@{temperature.value}"
+                android:text="@{temperature.value.toString() +(char) 0x00B0+ 'C'}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -43,11 +49,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/name"
                 app:layout_constraintEnd_toStartOf="@id/target"
-                app:layout_constraintHorizontal_weight="1"></TextView>
+                app:layout_constraintHorizontal_weight="1">
+            </TextView>
 
             <TextView
                 android:id="@+id/target"
-                android:text="@{temperature.targeted}"
+                android:text="@{temperature.targeted.toString() + (char) 0x00B0 + 'C'}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -55,7 +62,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/value"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"></TextView>
+                app:layout_constraintHorizontal_weight="1">
+            </TextView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

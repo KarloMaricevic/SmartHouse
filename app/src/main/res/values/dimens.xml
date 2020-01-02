@@ -63,4 +63,19 @@
     <dimen name="editTextDialogPaddingElse">4dp</dimen>
 
 
+
+    <!--RoomsDialogs-->
+    <dimen name="switchMarginTop">16dp</dimen>
+    <dimen name="switchMarginLeft">4dp</dimen>
+    <dimen name="switchMarginRight">4dp</dimen>
+    <dimen name="switchMarginBottom">4dp</dimen>
+
+    <dimen name="textViewMarginTop">16dp</dimen>
+    <dimen name="textViewMarginBottom">4dp</dimen>
+    <dimen name="textViewTextSize">18sp</dimen>
+
+    <dimen name="numberPickedMarginTop">16dp</dimen>
+    <dimen name="numberPickerMarginBottom">4dp</dimen>
+
+
 </resources>

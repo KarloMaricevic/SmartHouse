@@ -9,14 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.smarthouse.BaseAplication;
-import com.example.smarthouse.R;
 import com.example.smarthouse.UI.BaseFragment;
 import com.example.smarthouse.adapters.RoomFragment.Drawer.INavigation;
 import com.example.smarthouse.adapters.RoomFragment.Drawer.RoomListAdapter;
@@ -30,7 +28,6 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,20 +35,20 @@ import io.reactivex.schedulers.Schedulers;
 public class RoomDrawerFragment extends BaseFragment implements INavigation {
 
     @Inject
-    ViewModelProviderFactory viewModelFactory;
+    ViewModelProviderFactory mViewModelFactory;
 
     @Inject
-    RoomListAdapter adapter;
+    RoomListAdapter mAdapter;
 
-    FragmentRoomDrawerBinding binding;
+    FragmentRoomDrawerBinding mBinding;
 
-    RoomViewModel viewModel;
+    RoomViewModel mViewModel;
 
 
     @Override
     public void onAttach(@NonNull Context context) {
         ((BaseAplication) getActivity().getApplication())
-                .getAuthCompoent()
+                .getmAuthCompoent()
                 .getRoomDrawerSubcomponentFactory()
                 .create(this)
                 .inject(this);
@@ -71,29 +68,29 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
                              Bundle savedInstanceState) {
 
 
-        binding = FragmentRoomDrawerBinding.inflate(inflater,container,false);
+        mBinding = FragmentRoomDrawerBinding.inflate(inflater,container,false);
 
-        viewModel = ViewModelProviders.of(getParentFragment(),viewModelFactory).get(RoomViewModel.class);
+        mViewModel = ViewModelProviders.of(getParentFragment(), mViewModelFactory).get(RoomViewModel.class);
 
         setUpRecyclerView();
 
-        Disposable qeryTextChangeDisposable = RxSearchView.queryTextChangeEvents(binding.roomsSearchView)
+        Disposable qeryTextChangeDisposable = RxSearchView.queryTextChangeEvents(mBinding.roomsSearchView)
                 .subscribe(
                 (searchViewQueryTextEvent) ->
                 {
                     String searchText = searchViewQueryTextEvent.getQueryText().toString();
-                    viewModel.setDrawerQueryText(searchText);
+                    mViewModel.setmDrawerQueryText(searchText);
 
                 });
 
 
-        Disposable selectedRoomIdDisposable  = viewModel
-                .getChosenRoomIdObservable()
+        Disposable selectedRoomIdDisposable  = mViewModel
+                .getmChosenRoomIdObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (roomId) ->
                         {
-                            adapter.setSelected(roomId);
+                            mAdapter.setSelected(roomId);
                         },
                         (e) -> {}
                 );
@@ -101,32 +98,32 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
 
         addDisposables(selectedRoomIdDisposable,qeryTextChangeDisposable);
 
-        return binding.getRoot();
+        return mBinding.getRoot();
     }
 
     @Override
     public void onViewClick(String roomId) {
-        viewModel.setChosenRoomId(roomId);
+        mViewModel.setmChosenRoomId(roomId);
     }
 
 
     void setUpRecyclerView()
     {
-        binding.navigationRecyclerView.setAdapter(adapter);
-        binding.navigationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-        binding.navigationRecyclerView.addItemDecoration(new RoomListAdapterDecorator(10,10));
-        Disposable roomListFiltredDisposable = viewModel.roomListFilteredObservable()
+        mBinding.navigationRecyclerView.setAdapter(mAdapter);
+        mBinding.navigationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        mBinding.navigationRecyclerView.addItemDecoration(new RoomListAdapterDecorator(10,10));
+        Disposable roomListFiltredDisposable = mViewModel.roomListFilteredObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (roomList) ->
                         {
                             if(roomList.isEmpty())
                             {
-                                binding.noRoomsTextView.setVisibility(View.VISIBLE);
+                                mBinding.noRoomsTextView.setVisibility(View.VISIBLE);
                             }
                             else {
-                                binding.noRoomsTextView.setVisibility(View.INVISIBLE);
-                                adapter.changeData(roomList);
+                                mBinding.noRoomsTextView.setVisibility(View.INVISIBLE);
+                                mAdapter.changeData(roomList);
                             }
                         },
                         (e) -> Log.e("DrawerRecyclerError: ",e.getMessage()));

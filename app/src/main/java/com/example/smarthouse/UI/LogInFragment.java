@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -33,11 +32,11 @@ import static android.view.View.VISIBLE;
 public class LogInFragment extends BaseFragment {
 
     @Inject
-    ViewModelProviderFactory providerFactory;
+    ViewModelProviderFactory mProviderFactory;
 
-    private LogInViewModel viewModel;
+    private LogInViewModel mViewModel;
 
-    FragmentLogInBinding binding;
+    FragmentLogInBinding mBinding;
 
     public LogInFragment() {
         // Required empty public constructor
@@ -47,7 +46,7 @@ public class LogInFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         ((BaseAplication) getActivity().getApplication())
-                .getApplicationComponent()
+                .getmApplicationComponent()
                 .getLogInSubcomponentFacotry()
                 .create()
                 .inject(this);
@@ -58,55 +57,55 @@ public class LogInFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentLogInBinding.inflate(inflater,container,false);
-        viewModel = ViewModelProviders.of(this,providerFactory).get(LogInViewModel.class);
-        binding.setViewModel(viewModel);
+        mBinding = FragmentLogInBinding.inflate(inflater,container,false);
+        mViewModel = ViewModelProviders.of(this, mProviderFactory).get(LogInViewModel.class);
+        mBinding.setViewModel(mViewModel);
 
 
 
 
 
-        Disposable loginClickDisposable = RxView.clicks(binding.cardLayout.cirLoginButton).subscribe(
-                (unit) -> viewModel.authenticate() ,
+        Disposable loginClickDisposable = RxView.clicks(mBinding.cardLayout.cirLoginButton).subscribe(
+                (unit) -> mViewModel.authenticate() ,
                 (e) -> Log.e("LogInClickError", e.getMessage())
         );
 
-        Disposable registerTextViewClickDisposable = RxView.clicks(binding.cardLayout.registerTextView).subscribe(
-                (unit) -> Navigation.findNavController(binding.cardLayout.cirLoginButton).navigate(R.id.action_logInFragment_to_registration_graph),
+        Disposable registerTextViewClickDisposable = RxView.clicks(mBinding.cardLayout.registerTextView).subscribe(
+                (unit) -> Navigation.findNavController(mBinding.cardLayout.cirLoginButton).navigate(R.id.action_logInFragment_to_registration_graph),
                 (e) -> Log.e("RegisterCickError: ", e.getMessage())
         );
 
 
-        Disposable logInPositionDisposable = viewModel.getLogInPositionObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable logInPositionDisposable = mViewModel.getLogInPositionObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(
                 (logInPosition) -> {
                     switch (logInPosition) {
                         case AUTHENTICATED_AND_SET_UP:
                             hideKeyboard(getContext(),getActivity().getCurrentFocus());
-                            Navigation.findNavController(binding.getRoot()).navigate(LogInFragmentDirections.actionLogInFragmentToHousesListFragmnet());
+                            Navigation.findNavController(mBinding.getRoot()).navigate(LogInFragmentDirections.actionLogInFragmentToHousesListFragmnet());
                             break;
                         case AUTHENTICATED_AND_SETTING_UP:
-                            viewModel.saveCredencials(getContext(),getViewLifecycleOwner());
+                            mViewModel.saveCredencials(getContext(),getViewLifecycleOwner());
                             break;
                         case INVALID_AUTHENTICATION:
-                            binding.cardLayout.errorTextView.setVisibility(VISIBLE);
+                            mBinding.cardLayout.errorTextView.setVisibility(VISIBLE);
                             break;
                         case UNAUTHENTICATED:
-                            binding.cardLayout.errorTextView.setVisibility(INVISIBLE);
+                            mBinding.cardLayout.errorTextView.setVisibility(INVISIBLE);
                             break;
                     }
                 },
                 (e) -> Log.e("LogInPositionError: ",e.getMessage())
         );
 
-        Disposable areFiledsFilledDisposabe = viewModel.getAreFiledsFilled().observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable areFiledsFilledDisposabe = mViewModel.getAreFiledsFilled().observeOn(AndroidSchedulers.mainThread()).subscribe(
                 (isFilled) -> {
                     if(isFilled)
                     {
-                        binding.cardLayout.cirLoginButton.setClickable(true);
+                        mBinding.cardLayout.cirLoginButton.setClickable(true);
                     }
                     else
                     {
-                        binding.cardLayout.cirLoginButton.setClickable(false);
+                        mBinding.cardLayout.cirLoginButton.setClickable(false);
                     }
                 },
                 (e) -> Log.e("areFiledsFilledError: ",e.getMessage())
@@ -114,7 +113,7 @@ public class LogInFragment extends BaseFragment {
 
         addDisposables(logInPositionDisposable,loginClickDisposable,registerTextViewClickDisposable,loginClickDisposable,areFiledsFilledDisposabe);
 
-        return binding.getRoot();
+        return mBinding.getRoot();
     }
 
 

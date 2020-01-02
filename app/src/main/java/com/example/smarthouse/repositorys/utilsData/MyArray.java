@@ -1,35 +1,33 @@
 package com.example.smarthouse.repositorys.utilsData;
 
-import com.example.smarthouse.data.UsersHouseInfo;
-
 import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 
 public class MyArray<T> {
-    RxFirebaseChildEvent.EventType eventType;
-    T data;
+    RxFirebaseChildEvent.EventType mEventType;
+    T mData;
 
     public MyArray() {
     }
 
 
     public MyArray(RxFirebaseChildEvent.EventType eventType, T data) {
-        this.eventType = eventType;
-        this.data = data;
+        this.mEventType = eventType;
+        this.mData = data;
     }
 
     public RxFirebaseChildEvent.EventType getEventType() {
-        return eventType;
+        return mEventType;
     }
 
-    public void setEventType(RxFirebaseChildEvent.EventType eventType) {
-        this.eventType = eventType;
+    public void setEventType(RxFirebaseChildEvent.EventType mEventType) {
+        this.mEventType = mEventType;
     }
 
     public T getData() {
-        return data;
+        return mData;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setData(T mData) {
+        this.mData = mData;
     }
 }

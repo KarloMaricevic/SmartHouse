@@ -2,7 +2,6 @@ package com.example.smarthouse.UI.roomFragment;
 
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -18,7 +17,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +40,12 @@ import io.reactivex.disposables.Disposable;
 public class RoomFragment extends BaseFragment {
 
     @Inject
-    ViewModelProviderFactory viewModelFactory;
+    ViewModelProviderFactory mViewModelFactory;
 
 
-    FragmentRoomBinding binding;
+    FragmentRoomBinding mBinding;
 
-    RoomViewModel viewModel;
+    RoomViewModel mViewModel;
 
 
     public RoomFragment() {
@@ -57,7 +55,7 @@ public class RoomFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         ((BaseAplication) getActivity().getApplication())
-                .getAuthCompoent()
+                .getmAuthCompoent()
                 .getRoomSubcomponentFacotry()
                 .create()
                 .inject(this);
@@ -69,20 +67,20 @@ public class RoomFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
 
-        binding = FragmentRoomBinding.inflate(inflater,container,false);
+        mBinding = FragmentRoomBinding.inflate(inflater,container,false);
 
-        viewModel = ViewModelProviders.of(this,viewModelFactory).get(RoomViewModel.class);
+        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RoomViewModel.class);
 
         //region AuthViewModel
 
-        Disposable authStateDisposable = viewModel.getAuthState()
+        Disposable authStateDisposable = mViewModel.getmAuthState()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((authState) -> {
                             switch (authState) {
 
                                 case UNAUTHENTICATED:
                                     ((BaseAplication) getActivity().getApplication()).releseAuthComponent();
-                                    Navigation.findNavController(binding.getRoot()).navigate(LogInFragmentDirections.actionGlobalLogInFragment());
+                                    Navigation.findNavController(mBinding.getRoot()).navigate(LogInFragmentDirections.actionGlobalLogInFragment());
                                     break;
                             }
                         },
@@ -91,51 +89,51 @@ public class RoomFragment extends BaseFragment {
         //endregion
 
 
-        viewModel.setHouseId(RoomFragmentArgs.fromBundle(getArguments()).getHouseId());
+        mViewModel.setmHouseId(RoomFragmentArgs.fromBundle(getArguments()).getHouseId());
 
         setUpToolbar();
 
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-        binding.drawerLayout.openDrawer(GravityCompat.START);
+        mBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        mBinding.drawerLayout.openDrawer(GravityCompat.START);
 
 
-        Disposable hasUserChosenRoomOnceDisposable = viewModel.getHasUserChosenRoomOnceObservable()
+        Disposable hasUserChosenRoomOnceDisposable = mViewModel.getHasUserChosenRoomOnceObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (hasChosen) -> binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED),
+                        (hasChosen) -> mBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED),
                         (e) ->{});
 
         addDisposables(authStateDisposable,hasUserChosenRoomOnceDisposable);
 
-        return binding.getRoot();
+        return mBinding.getRoot();
     }
 
     public void setUpToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.roomsToolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.roomsToolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if(actionBar != null)
         {
             actionBar.setTitle("");
             actionBar.setDisplayHomeAsUpEnabled(true);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(),binding.drawerLayout,binding.roomsToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), mBinding.drawerLayout, mBinding.roomsToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
             toggle.setDrawerIndicatorEnabled(true);
-            binding.drawerLayout.addDrawerListener(toggle);
+            mBinding.drawerLayout.addDrawerListener(toggle);
             toggle.syncState();
         }
 
-        Disposable chosenRoomidDisposable= viewModel
-                .getChosenRoomIdObservable()
+        Disposable chosenRoomidDisposable= mViewModel
+                .getmChosenRoomIdObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         ((roomInfo) -> {
                             if(roomInfo != null) {
-                                binding.drawerLayout.closeDrawers();
+                                mBinding.drawerLayout.closeDrawers();
                             }
                         }),
                         (e) -> Log.e("ToolbarTitleError: ",e.getMessage())
                 );
 
-        Disposable choosenRoomNameDisposable = viewModel
+        Disposable choosenRoomNameDisposable = mViewModel
                 .getChosenRoomNameObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -159,14 +157,14 @@ public class RoomFragment extends BaseFragment {
         {
             if(savedInstanceState.getBoolean("isDrawerOpned",true))
             {
-                binding.drawerLayout.openDrawer(GravityCompat.START);
+                mBinding.drawerLayout.openDrawer(GravityCompat.START);
             }
             else
             {
-                binding.drawerLayout.closeDrawer(GravityCompat.START);
+                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
             }
-            viewModel.setHouseId(savedInstanceState.getString("houseId",null));
-            viewModel.setChosenRoomId(savedInstanceState.getString("roomId",null));
+            mViewModel.setmHouseId(savedInstanceState.getString("houseId",null));
+            mViewModel.setmChosenRoomId(savedInstanceState.getString("roomId",null));
         }
 
 
@@ -176,9 +174,9 @@ public class RoomFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("isDrawerOpned",binding.drawerLayout.isDrawerOpen(GravityCompat.START));
-        outState.putString("houseId",viewModel.getHouseId());
-        outState.putString("roomId",viewModel.getChosenRoomId());
+        outState.putBoolean("isDrawerOpned", mBinding.drawerLayout.isDrawerOpen(GravityCompat.START));
+        outState.putString("houseId", mViewModel.getmHouseId());
+        outState.putString("roomId", mViewModel.getmChosenRoomId());
 
     }
 
@@ -187,16 +185,16 @@ public class RoomFragment extends BaseFragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                viewModel.getRoomIdPositionForBackNavigation().subscribe(
+                mViewModel.getRoomIdPositionForBackNavigation().subscribe(
                         (index) ->
                         {
                             if(index == -1)
                             {
-                                Navigation.findNavController(binding.getRoot()).navigate(RoomFragmentDirections.actionRoomFragmentToHousesListFragmnet());
+                                Navigation.findNavController(mBinding.getRoot()).navigate(RoomFragmentDirections.actionRoomFragmentToHousesListFragmnet());
                             }
                             else
                             {
-                                viewModel.setUpRoomIdFromBackNavigation(index);
+                                mViewModel.setUpRoomIdFromBackNavigation(index);
                             }
                         }
 
@@ -207,6 +205,8 @@ public class RoomFragment extends BaseFragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
 
     }
+
+
 }
 
 

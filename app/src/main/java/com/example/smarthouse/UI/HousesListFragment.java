@@ -3,7 +3,6 @@ package com.example.smarthouse.UI;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,8 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -37,7 +34,6 @@ import com.example.smarthouse.adapters.housesListAdapter.HousesListAdapter;
 import com.example.smarthouse.adapters.housesListAdapter.IOption;
 import com.example.smarthouse.databinding.DialogChangeNameLayoutBinding;
 import com.example.smarthouse.databinding.FragmentHousesListFragmnetBinding;
-import com.example.smarthouse.repositorys.utilsData.MyArray;
 import com.example.smarthouse.viewmodels.HousesListViewModel;
 import com.example.smarthouse.viewmodels.ViewModelProviderFactory;
 
@@ -52,7 +48,6 @@ import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class HousesListFragment extends BaseFragment implements IOption {
@@ -68,18 +63,18 @@ public class HousesListFragment extends BaseFragment implements IOption {
 
 
     @Inject
-    protected ViewModelProviderFactory providerFactory;
+    protected ViewModelProviderFactory mProviderFactory;
 
     @Inject
-    protected HousesListAdapter adapter;
+    protected HousesListAdapter mAdapter;
 
-    private HousesListViewModel viewModel;
+    private HousesListViewModel mViewModel;
 
-    private FragmentHousesListFragmnetBinding binding;
+    private FragmentHousesListFragmnetBinding mBinding;
     private DialogChangeNameLayoutBinding mDialogBinding;
 
     String mHouseId;
-    String pictureFilePath;
+    String mPictureFilePath;
 
 
 
@@ -90,7 +85,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
     @Override
     public void onAttach(@NonNull Context context) {
         ((BaseAplication) getActivity().getApplication())
-                .getAuthCompoent()
+                .getmAuthCompoent()
                 .getHousesListSubcomponentFactory()
                 .create(this::onMenuItemClicked)
                 .inject(this);
@@ -101,9 +96,9 @@ public class HousesListFragment extends BaseFragment implements IOption {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        viewModel = ViewModelProviders.of(this,providerFactory).get(HousesListViewModel.class);
-        binding = FragmentHousesListFragmnetBinding.inflate(inflater,container,false);
-        return binding.getRoot();
+        mViewModel = ViewModelProviders.of(this, mProviderFactory).get(HousesListViewModel.class);
+        mBinding = FragmentHousesListFragmnetBinding.inflate(inflater,container,false);
+        return mBinding.getRoot();
     }
 
 
@@ -187,14 +182,14 @@ public class HousesListFragment extends BaseFragment implements IOption {
         super.onActivityResult(requestCode,resultCode,data);
 
         if(requestCode == TAKE_PICTURE_CODE && resultCode == Activity.RESULT_OK ) {
-            if(mHouseId == null || mHouseId.equals("") || pictureFilePath.equals("") || pictureFilePath == null) {
+            if(mHouseId == null || mHouseId.equals("") || mPictureFilePath.equals("") || mPictureFilePath == null) {
                 Toast.makeText(getActivity().getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG);
             }
             else {
-                Bitmap takenPicture = BitmapFactory.decodeFile(pictureFilePath);
-                File file = new File(pictureFilePath);
+                Bitmap takenPicture = BitmapFactory.decodeFile(mPictureFilePath);
+                File file = new File(mPictureFilePath);
                 file.deleteOnExit();
-                viewModel.saveBitmapToDatabase(takenPicture, mHouseId).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<String>() {
+                mViewModel.saveBitmapToDatabase(takenPicture, mHouseId).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<String>() {
                     Disposable d;
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -225,7 +220,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
                     Uri pictureUri = data.getData();
                     if(hasPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),pictureUri);
-                        viewModel.saveBitmapToDatabase(selectedImage, mHouseId).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<String>() {
+                        mViewModel.saveBitmapToDatabase(selectedImage, mHouseId).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<String>() {
                             Disposable d;
                             @Override
                             public void onSubscribe(Disposable d) {
@@ -252,7 +247,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
             }
         }
         mHouseId = null;
-        pictureFilePath = null;
+        mPictureFilePath = null;
     }
 
     public boolean hasPermissions(String permission) {
@@ -270,14 +265,14 @@ public class HousesListFragment extends BaseFragment implements IOption {
     public void makeAndConnectObservers(){
         //region AuthViewModel
 
-        Disposable authStateDisposable = viewModel.getAuthState()
+        Disposable authStateDisposable = mViewModel.getmAuthState()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((authState) -> {
                             switch (authState) {
 
                                 case UNAUTHENTICATED:
                                     ((BaseAplication) getActivity().getApplication()).releseAuthComponent();
-                                    Navigation.findNavController(binding.getRoot()).navigate(LogInFragmentDirections.actionGlobalLogInFragment());
+                                    Navigation.findNavController(mBinding.getRoot()).navigate(LogInFragmentDirections.actionGlobalLogInFragment());
                                     break;
                             }
                         },
@@ -285,18 +280,18 @@ public class HousesListFragment extends BaseFragment implements IOption {
 
         //endregion
 
-        binding.recyclerView.setAdapter(adapter);
+        mBinding.recyclerView.setAdapter(mAdapter);
         Disposable usersHousesDisposable =
-                viewModel.getUsersHousesObservable()
+                mViewModel.getUsersHousesObservable()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((usersHousesList) -> {
-                                    adapter.setUsersHausesList(usersHousesList);
-                                    binding.recyclerView.getAdapter().notifyDataSetChanged();
+                                    mAdapter.setmUsersHausesList(usersHousesList);
+                                    mBinding.recyclerView.getAdapter().notifyDataSetChanged();
                                 },
                                 (e) -> Log.e("usersHousesError: ",e.getMessage())
                         );
 
-        SearchView searchView = (SearchView) binding.toolbar.getMenu().findItem(R.id.action_search).getActionView();
+        SearchView searchView = (SearchView) mBinding.toolbar.getMenu().findItem(R.id.action_search).getActionView();
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -307,7 +302,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                viewModel.setUserQuery(newText);
+                mViewModel.setUserQuery(newText);
                 return true;
             }
         });
@@ -350,7 +345,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
                     ".jpg",
                     storageDir
             );
-        pictureFilePath = image.getAbsolutePath();
+        mPictureFilePath = image.getAbsolutePath();
         return image;
     }
 
@@ -360,12 +355,12 @@ public class HousesListFragment extends BaseFragment implements IOption {
         AlertDialog dialog = builder
                 .setTitle("New name")
                 .setView(mDialogBinding.getRoot())
-                .setNegativeButton("Cancle",(dialogInstance,id) ->{
+                .setNegativeButton(R.string.dialogNegativeButton,(dialogInstance,which) ->{
                     mDialogBinding = null;
                     mHouseId = null;
                 })
-                .setPositiveButton("Confirm",(dialogInstace,id) -> {
-                    viewModel.changeHouseName(mDialogBinding.houseName.getText().toString(),mHouseId).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new CompletableObserver() {
+                .setPositiveButton(R.string.dialogPositiveButton,(dialogInstace,which) -> {
+                    mViewModel.changeHouseName(mDialogBinding.houseName.getText().toString(),mHouseId).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new CompletableObserver() {
                         Disposable d;
                         @Override
                         public void onSubscribe(Disposable d) {

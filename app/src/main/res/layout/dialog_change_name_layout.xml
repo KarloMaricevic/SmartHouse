@@ -8,16 +8,19 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+
+        >
 
         <EditText
             android:id="@+id/houseName"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:importantForAutofill="no"
             android:layout_marginTop="@dimen/editTextDialogPaddingTop"
-            android:layout_marginLeft="@dimen/editTextDialogPaddingElse"
-            android:layout_marginRight="@dimen/editTextDialogPaddingElse"
+            android:layout_marginStart="@dimen/editTextDialogPaddingElse"
+            android:layout_marginEnd="@dimen/editTextDialogPaddingElse"
             android:layout_marginBottom="@dimen/editTextDialogPaddingElse"
             android:lines="1"
             android:hint="@string/hindDialogEditText" />

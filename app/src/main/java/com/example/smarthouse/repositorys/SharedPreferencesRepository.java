@@ -15,33 +15,33 @@ import io.reactivex.schedulers.Schedulers;
 public class SharedPreferencesRepository {
 
 
-    Context appContext;
-    private SharedPreferences preferences;
+    Context mAppContext;
+    private SharedPreferences mPreferences;
 
 
     @Inject
     SharedPreferencesRepository(Context appContext) {
-        this.appContext = appContext;
-        preferences = appContext.getSharedPreferences(appContext.getString(R.string.sharedPreferencesName), Context.MODE_PRIVATE);
+        this.mAppContext = appContext;
+        mPreferences = appContext.getSharedPreferences(appContext.getString(R.string.sharedPreferencesName), Context.MODE_PRIVATE);
     }
 
 
     public Observable<String> getUseranmeObservable() {
         return Observable
                 .create((emitter -> {
-                    emitter.onNext(appContext.getString(R.string.username));
+                    emitter.onNext(mAppContext.getString(R.string.username));
 
                     final SharedPreferences.OnSharedPreferenceChangeListener listener =
                             (sharedPreferences, key) -> emitter.onNext(key);
 
                     emitter.setCancellable(
-                            () -> preferences.unregisterOnSharedPreferenceChangeListener(listener)
+                            () -> mPreferences.unregisterOnSharedPreferenceChangeListener(listener)
                     );
 
-                    preferences.registerOnSharedPreferenceChangeListener(listener);
+                    mPreferences.registerOnSharedPreferenceChangeListener(listener);
                 }))
-                .filter((key) ->key.equals(appContext.getString(R.string.username)))
-                .map((key) -> preferences.getString(appContext.getString(R.string.username), ""))
+                .filter((key) ->key.equals(mAppContext.getString(R.string.username)))
+                .map((key) -> mPreferences.getString(mAppContext.getString(R.string.username), ""))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -49,19 +49,19 @@ public class SharedPreferencesRepository {
     public Observable<String> getPasswordObservable() {
         return Observable
                 .create((emitter -> {
-                    emitter.onNext(appContext.getString(R.string.password));
+                    emitter.onNext(mAppContext.getString(R.string.password));
 
                     final SharedPreferences.OnSharedPreferenceChangeListener listener =
                             (sharedPreferences, key) -> emitter.onNext(key);
 
                     emitter.setCancellable(
-                            () -> preferences.unregisterOnSharedPreferenceChangeListener(listener)
+                            () -> mPreferences.unregisterOnSharedPreferenceChangeListener(listener)
                     );
 
-                    preferences.registerOnSharedPreferenceChangeListener(listener);
+                    mPreferences.registerOnSharedPreferenceChangeListener(listener);
                 }))
-                .filter((key) -> key.equals(appContext.getString(R.string.password)))
-                .map((key) -> preferences.getString(appContext.getString(R.string.password), ""))
+                .filter((key) -> key.equals(mAppContext.getString(R.string.password)))
+                .map((key) -> mPreferences.getString(mAppContext.getString(R.string.password), ""))
                 .subscribeOn(Schedulers.io());
 
     }

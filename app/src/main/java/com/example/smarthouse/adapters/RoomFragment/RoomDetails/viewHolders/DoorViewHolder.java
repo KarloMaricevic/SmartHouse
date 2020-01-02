@@ -1,5 +1,7 @@
 package com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders;
 
+import android.view.View;
+
 import com.example.myexpandablerecyclerview.viewHolders.ChildViewHolder;
 import com.example.smarthouse.data.roomData.Door;
 import com.example.smarthouse.databinding.DoorItemBinding;
@@ -7,18 +9,32 @@ import com.example.smarthouse.databinding.DoorItemBinding;
 public class DoorViewHolder extends ChildViewHolder<Door> {
 
 
-    DoorItemBinding binding;
+    DoorItemBinding mBinding;
+    RoomAdapterCallback mCallback;
+
+    View.OnClickListener onClickListener = (view) -> {
+        if(mBinding.getDoor() != null && mCallback != null)
+        {
+            mCallback.changeValueOf(mBinding.getDoor());
+        }
+
+    };
 
 
-    public DoorViewHolder(DoorItemBinding binding) {
+
+    public DoorViewHolder(DoorItemBinding binding,RoomAdapterCallback callback) {
         super(binding.getRoot());
-        this.binding = binding;
+        this.mBinding = binding;
+        this.mCallback = callback;
     }
 
 
 
     public void bind(Door type) {
-        binding.setDoor(type);
-        binding.executePendingBindings();
+        mBinding.setDoor(type);
+        mBinding.setOnClickListner(onClickListener);
+        mBinding.executePendingBindings();
     }
+
+
 }

@@ -22,18 +22,18 @@ import io.reactivex.Single;
 
 public class HousesListViewModel extends AuthViewModel {
 
-    Repository repository;
+    Repository mRepository;
 
-    ObservableField<String> userQuery;
-    Observable<String> userQueryObservable;
+    ObservableField<String> mUserQuery;
+    Observable<String> mUserQueryObservable;
 
 
     @Inject
     HousesListViewModel(Repository repository, SharedPreferencesRepository shearedPrefrencesRepository) {
         super(repository, shearedPrefrencesRepository);
-        this.repository = repository;
-        userQuery = new ObservableField<>("");
-        userQueryObservable = MakeObservable.makeObservebleForString(userQuery);
+        this.mRepository = repository;
+        mUserQuery = new ObservableField<>("");
+        mUserQueryObservable = MakeObservable.makeObservebleForString(mUserQuery);
     }
 
 
@@ -41,13 +41,13 @@ public class HousesListViewModel extends AuthViewModel {
     public Observable<List<UsersHouseInfo>> getUsersHousesObservable()
     {
 
-        Observable<List<UsersHouseInfo>> newUsersHausesObservable = getUsernameObservable()
+        Observable<List<UsersHouseInfo>> newUsersHausesObservable = getmUsernameObservable()
                 .switchMap((username) -> {
-                    return repository.getUserHouses(username).toObservable();
+                    return mRepository.getUserHouses(username).toObservable();
                 });
 
         return Observable
-                .combineLatest(newUsersHausesObservable,userQueryObservable, (userHouseList,queryString) -> {
+                .combineLatest(newUsersHausesObservable, mUserQueryObservable, (userHouseList, queryString) -> {
                     List<UsersHouseInfo> newList = new ArrayList<>();
                     if(queryString != null && !queryString.equals("")) {
                         for (UsersHouseInfo usersHauses : userHouseList) {
@@ -66,23 +66,26 @@ public class HousesListViewModel extends AuthViewModel {
 
 
     public String getUserQuery() {
-        return userQuery.get();
+        return mUserQuery.get();
     }
 
-    public void setUserQuery(String userQuery) {
-        this.userQuery.set(userQuery);
+    public void setUserQuery(String mUserQuery) {
+        this.mUserQuery.set(mUserQuery);
     }
 
 
     public Single<String> saveBitmapToDatabase(Bitmap bitmap, String houseId)
     {
         Bitmap resizedBitmap = PictureResize.getResizedBitmap(bitmap, 800, 533);
-        return repository.changeHousePicture(resizedBitmap,currentUsername,houseId);
+        return mRepository.changeHousePicture(resizedBitmap, mCurrentUsername,houseId);
     }
 
 
     public Completable changeHouseName(String newName, String houseId)
     {
-       return repository.changeHouseName(newName,currentUsername,houseId);
+       return mRepository.changeHouseName(newName, mCurrentUsername,houseId);
     }
+
+
+
 }

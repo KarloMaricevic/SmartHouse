@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<data>
+
+        <variable
+            name="door"
+            type="com.example.smarthouse.data.roomData.Door" />
+
+
+
+</data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        >
+
+
+        <TextView
+            android:id="@+id/doorName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/textViewMarginTop"
+            android:layout_marginBottom="@dimen/textViewMarginBottom"
+            android:gravity="center"
+            android:text="@{door.name.toString()}"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/locked"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            >
+        </TextView>
+
+        <Switch
+            android:id="@+id/locked"
+            android:checked="@{door.targeted ? false : true}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/switchMarginLeft"
+            android:layout_marginTop="@dimen/switchMarginTop"
+            android:layout_marginEnd="@dimen/switchMarginRight"
+            android:layout_marginBottom="@dimen/switchMarginBottom"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/doorName"
+            app:layout_constraintTop_toTopOf="parent">
+        </Switch>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

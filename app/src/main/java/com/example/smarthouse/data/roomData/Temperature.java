@@ -12,8 +12,8 @@ public class Temperature implements Comparable<Temperature>,IdComparable {
     protected String name;
     @PropertyName("temeperatureId")
     public String temperatureId;
-    protected String value;
-    protected String targeted;
+    protected Integer value;
+    protected Integer targeted;
 
 
     public Temperature() {
@@ -35,19 +35,19 @@ public class Temperature implements Comparable<Temperature>,IdComparable {
         this.temperatureId = temperatureId;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 
-    public String getTargeted() {
+    public Integer getTargeted() {
         return targeted;
     }
 
-    public void setTargeted(String targeted) {
+    public void setTargeted(Integer targeted) {
         this.targeted = targeted;
     }
 

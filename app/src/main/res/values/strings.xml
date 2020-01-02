@@ -14,6 +14,7 @@
 
     <!-- logInCardLayout -->
 
+    <string name="login">Login</string>
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
@@ -30,6 +31,8 @@
     <!--RoomDrawerFragment-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="noRooms">This house doesn\'t have any rooms</string>
+
 
 
     <!-- doorView strings  -->
@@ -70,6 +73,18 @@
     <!-- dialog change Name -->
 
     <string name="hindDialogEditText">New House Name</string>
+
+
+    <!--dialog buttons-->
+    <string name="dialogPositiveButton">Confirm</string>
+    <string name="dialogNegativeButton">Cancel</string>
+
+    <string name="dialogHouseTitle">New name:</string>
+    <string name="dialogDoorTitle">Door unlocked:</string>
+    <string name="dialogLightTitle">Light turned on</string>
+    
+    <string name="dialogTemperatureTitle">Change temperature:</string>
+    
 
 
 </resources>

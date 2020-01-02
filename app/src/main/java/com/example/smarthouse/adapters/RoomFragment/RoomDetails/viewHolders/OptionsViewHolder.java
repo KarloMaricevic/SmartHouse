@@ -8,39 +8,39 @@ import com.example.smarthouse.databinding.TabItemBinding;
 public class OptionsViewHolder extends GroupViewHolder {
 
 
-    private TabItemBinding binding;
+    private TabItemBinding mBinding;
 
 
     public OptionsViewHolder(TabItemBinding binding) {
         super(binding.getRoot());
-        this.binding = binding;
+        this.mBinding = binding;
     }
 
 
     public void bind(String optionName, View.OnClickListener onClickListener)
     {
-        binding.setOptionName(optionName);
-        binding.setOnClickListener(onClickListener != null ? onClickListener : null);
-        binding.setIsExpanded(false);
-        binding.setOnClickListener(
+        mBinding.setOptionName(optionName);
+        mBinding.setOnClickListener(onClickListener != null ? onClickListener : null);
+        mBinding.setIsExpanded(false);
+        mBinding.setOnClickListener(
                 (view) -> {
                     if(listener != null)
                     {
                         listener.onGroupClick(getAdapterPosition());
                     }
                 });
-        binding.executePendingBindings();
+        mBinding.executePendingBindings();
     }
 
     @Override
     public void expand() {
-        binding.setIsExpanded(true);
-        binding.executePendingBindings();
+        mBinding.setIsExpanded(true);
+        mBinding.executePendingBindings();
     }
 
     @Override
     public void collapse() {
-        binding.setIsExpanded(false);
-        binding.executePendingBindings();
+        mBinding.setIsExpanded(false);
+        mBinding.executePendingBindings();
     }
 }

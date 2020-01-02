@@ -1,20 +1,35 @@
 package com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders;
 
+import android.view.View;
+
 import com.example.myexpandablerecyclerview.viewHolders.ChildViewHolder;
 import com.example.smarthouse.data.roomData.Light;
 import com.example.smarthouse.databinding.LightItemBinding;
 
 public class LightViewHolder extends ChildViewHolder<Light> {
 
-    LightItemBinding binding;
+    LightItemBinding mBinding;
+    RoomAdapterCallback mCallback;
 
-    public LightViewHolder(LightItemBinding binding) {
+    View.OnClickListener onClickListener = (view) -> {
+        if(mBinding.getLight() != null && mCallback != null)
+        {
+            mCallback.changeValueOf(mBinding.getLight());
+        }
+
+    };
+
+
+    public LightViewHolder(LightItemBinding binding,RoomAdapterCallback callback) {
         super(binding.getRoot());
-        this.binding  =binding;
+        this.mBinding =binding;
+        this.mCallback = callback;
+
 
     }
     public void bind(Light type) {
-        binding.setLight(type);
-        binding.executePendingBindings();
+        mBinding.setLight(type);
+        mBinding.setOnClickListner(onClickListener);
+        mBinding.executePendingBindings();
     }
 }

@@ -1,7 +1,5 @@
 package com.example.smarthouse.viewmodels;
 
-import android.content.Context;
-
 import androidx.lifecycle.ViewModel;
 
 import com.example.smarthouse.repositorys.Repository;
@@ -19,30 +17,30 @@ public abstract class AuthViewModel extends ViewModel {
         AUTHENTICATED,
     }
 
-    protected String  currentUsername;
+    protected String mCurrentUsername;
 
-    Observable<String> usernameObservable;
-    Observable<String> passwordObservable;
-    Observable<String> dbPassword;
-    Observable<AuthViewModel.AuthenticationState> authState;
+    Observable<String> mUsernameObservable;
+    Observable<String> mPasswordObservable;
+    Observable<String> mDbPassword;
+    Observable<AuthViewModel.AuthenticationState> mAuthState;
 
     AuthViewModel(Repository repository, SharedPreferencesRepository shearedPrefrencesRepository)
     {
-        usernameObservable = shearedPrefrencesRepository.getUseranmeObservable();
-        passwordObservable = shearedPrefrencesRepository.getPasswordObservable();
+        mUsernameObservable = shearedPrefrencesRepository.getUseranmeObservable();
+        mPasswordObservable = shearedPrefrencesRepository.getPasswordObservable();
 
-        usernameObservable.subscribe(
+        mUsernameObservable.subscribe(
                 (username) -> {
-                    this.currentUsername = username;
+                    this.mCurrentUsername = username;
                 },
                 (e) -> {}
         );
 
-        dbPassword = usernameObservable
+        mDbPassword = mUsernameObservable
                 .switchMap((useranme) -> repository.getUsersCredencilas(useranme).toObservable());
 
-        authState = Observable
-                .combineLatest(usernameObservable,passwordObservable,dbPassword, (username,password,dbPassword) -> {
+        mAuthState = Observable
+                .combineLatest(mUsernameObservable, mPasswordObservable, mDbPassword, (username, password, dbPassword) -> {
                     HashMap<String, String> combinedMap = new HashMap<String, String>();
                     combinedMap.put("username", username);
                     combinedMap.put("password", password);
@@ -68,11 +66,11 @@ public abstract class AuthViewModel extends ViewModel {
                         });
     }
 
-    public Observable<AuthViewModel.AuthenticationState> getAuthState() {
-        return authState;
+    public Observable<AuthViewModel.AuthenticationState> getmAuthState() {
+        return mAuthState;
     }
 
-    public Observable<String> getUsernameObservable() {
-        return usernameObservable;
+    public Observable<String> getmUsernameObservable() {
+        return mUsernameObservable;
     }
 }

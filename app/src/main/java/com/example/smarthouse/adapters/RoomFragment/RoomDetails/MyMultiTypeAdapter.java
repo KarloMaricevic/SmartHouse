@@ -11,6 +11,7 @@ import com.example.myexpandablerecyclerview.viewHolders.ChildViewHolder;
 import com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders.DoorViewHolder;
 import com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders.LightViewHolder;
 import com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders.OptionsViewHolder;
+import com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders.RoomAdapterCallback;
 import com.example.smarthouse.adapters.RoomFragment.RoomDetails.viewHolders.TemperatureViewHolder;
 import com.example.smarthouse.data.roomData.Door;
 import com.example.smarthouse.data.roomData.Light;
@@ -35,10 +36,13 @@ public class MyMultiTypeAdapter  extends MultiTypeExpandableRecyclerViewAdapter<
     public static final  int  LIGHT_VIEW_TYPE = 5;
     public static final int TEMPERATURE_VIEW_TYPE = 6;
 
+    RoomAdapterCallback mRoomAdapterCallback;
+
 
     @Inject
-    public MyMultiTypeAdapter() {
+    public MyMultiTypeAdapter(RoomAdapterCallback roomAdapterCallback) {
         super();
+        this.mRoomAdapterCallback = roomAdapterCallback;
     }
 
 
@@ -70,13 +74,13 @@ public class MyMultiTypeAdapter  extends MultiTypeExpandableRecyclerViewAdapter<
         {
             case DOOR_VOEW_TYPE :
                 DoorItemBinding doorBinding = DoorItemBinding.inflate(LayoutInflater.from(parent.getContext()));
-                return new DoorViewHolder(doorBinding);
+                return new DoorViewHolder(doorBinding, mRoomAdapterCallback);
             case LIGHT_VIEW_TYPE :
                 LightItemBinding lightBinding = LightItemBinding.inflate(LayoutInflater.from(parent.getContext()));
-                return new LightViewHolder(lightBinding);
+                return new LightViewHolder(lightBinding, mRoomAdapterCallback);
             case TEMPERATURE_VIEW_TYPE :
                 TemperatureItemBinding temperatureBinding = TemperatureItemBinding.inflate(LayoutInflater.from(parent.getContext()));
-                return new TemperatureViewHolder(temperatureBinding);
+                return new TemperatureViewHolder(temperatureBinding, mRoomAdapterCallback);
             default:
                 throw  new IllegalArgumentException("WrongType");
         }

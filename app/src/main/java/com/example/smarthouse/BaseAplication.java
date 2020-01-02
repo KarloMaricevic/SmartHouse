@@ -2,49 +2,40 @@ package com.example.smarthouse;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
-import androidx.camera.core.CameraX;
-import androidx.camera.core.CameraXConfig;
-import androidx.camera.core.ImageCaptureConfig;
 
 import com.example.smarthouse.di.AppComponent;
 import com.example.smarthouse.di.AuthSubcomponent.AuthSubcomponent;
 import com.example.smarthouse.di.DaggerAppComponent;
-import androidx.camera.camera2.Camera2Config;
 
 
 
-public class BaseAplication extends Application implements CameraXConfig.Provider {
+public class BaseAplication extends Application {
 
-    AppComponent applicationComponent;
-    AuthSubcomponent authCompoent;
+    AppComponent mApplicationComponent;
+    AuthSubcomponent mAuthCompoent;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        applicationComponent = DaggerAppComponent.factory().create(this,getApplicationContext());
+        mApplicationComponent = DaggerAppComponent.factory().create(this,getApplicationContext());
     }
 
-    public AppComponent getApplicationComponent() {
-        return applicationComponent;
+    public AppComponent getmApplicationComponent() {
+        return mApplicationComponent;
     }
 
-    public AuthSubcomponent getAuthCompoent() {
-        if (authCompoent == null) {
-            authCompoent = applicationComponent.getAuthComponentFactory().create();
+    public AuthSubcomponent getmAuthCompoent() {
+        if (mAuthCompoent == null) {
+            mAuthCompoent = mApplicationComponent.getAuthComponentFactory().create();
         }
-        return authCompoent;
+        return mAuthCompoent;
     }
 
     public void releseAuthComponent()
     {
-        authCompoent = null;
+        mAuthCompoent = null;
     }
 
-    @NonNull
-    @Override
-    public CameraXConfig getCameraXConfig() {
-        return Camera2Config.defaultConfig();
-    }
+
 }
