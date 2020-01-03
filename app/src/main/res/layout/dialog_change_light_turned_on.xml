@@ -6,7 +6,7 @@
 
         <variable
             name="light"
-            type="com.example.smarthouse.data.roomData.Light" />
+            type="my.app.smarthouse.data.roomData.Light" />
 
     </data>
 

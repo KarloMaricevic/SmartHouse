@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="usersHouse"
-            type="com.example.smarthouse.data.UsersHouseInfo"/>
+            type="my.app.smarthouse.data.UsersHouseInfo"/>
     </data>
 
     <androidx.cardview.widget.CardView

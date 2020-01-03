@@ -4,7 +4,7 @@
     <data>
         <variable
             name="roomInfo"
-            type="com.example.smarthouse.data.roomData.RoomInfo" />
+            type="my.app.smarthouse.data.roomData.RoomInfo" />
 
         <variable
             name="isSelected"

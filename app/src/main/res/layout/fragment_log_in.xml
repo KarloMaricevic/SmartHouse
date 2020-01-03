@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.smarthouse.viewmodels.LogInViewModel" />
+            type="my.app.smarthouse.viewmodels.LogInViewModel" />
     </data>
 
     <RelativeLayout style="@style/loginParent">

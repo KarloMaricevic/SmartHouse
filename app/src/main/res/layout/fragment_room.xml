@@ -31,7 +31,7 @@
 
             <fragment
                 android:id="@+id/roomFragment"
-                android:name="com.example.smarthouse.UI.roomFragment.RoomDetailsFragment"
+                android:name="my.app.smarthouse.UI.roomFragment.RoomDetailsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </fragment>
@@ -39,7 +39,7 @@
 
             <fragment
                 android:id="@+id/navigationFragment"
-                android:name="com.example.smarthouse.UI.roomFragment.RoomDrawerFragment"
+                android:name="my.app.smarthouse.UI.roomFragment.RoomDrawerFragment"
                 android:layout_width="@dimen/drawerViewWidth"
                 android:layout_height="match_parent"
                 android:layout_gravity="start|left"

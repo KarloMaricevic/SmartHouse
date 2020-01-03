@@ -6,7 +6,7 @@
 
         <variable
             name="door"
-            type="com.example.smarthouse.data.roomData.Door" />
+            type="my.app.smarthouse.data.roomData.Door" />
 
 
 

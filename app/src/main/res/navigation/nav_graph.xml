@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/logInFragment"
-        android:name="com.example.smarthouse.UI.LogInFragment"
+        android:name="my.app.smarthouse.UI.LogInFragment"
         android:label="fragment_log_in"
         tools:layout="@layout/fragment_log_in" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/housesListFragmnet"
-        android:name="com.example.smarthouse.UI.HousesListFragment"
+        android:name="my.app.smarthouse.UI.HousesListFragment"
         android:label="fragment_houses_list_fragmnet"
         tools:layout="@layout/fragment_houses_list_fragmnet" >
         <action
@@ -33,12 +33,12 @@
         app:startDestination="@id/enterUserInformationFragment" >
         <fragment
             android:id="@+id/enterUserInformationFragment"
-            android:name="com.example.smarthouse.EnterUserInformationFragment"
+            android:name="my.app.smarthouse.EnterUserInformationFragment"
             android:label="fragment_enter_user_information"
             tools:layout="@layout/fragment_enter_user_information" />
         <fragment
             android:id="@+id/chooseUserPasswordFragment"
-            android:name="com.example.smarthouse.ChooseUserPasswordFragment"
+            android:name="my.app.smarthouse.ChooseUserPasswordFragment"
             android:label="fragment_choose_user_password"
             tools:layout="@layout/fragment_choose_user_password" />
     </navigation>
@@ -50,7 +50,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/roomFragment"
-        android:name="com.example.smarthouse.UI.roomFragment.RoomFragment"
+        android:name="my.app.smarthouse.UI.roomFragment.RoomFragment"
         android:label="fragment_room"
         tools:layout="@layout/fragment_room" >
         <argument
