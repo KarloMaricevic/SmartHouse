@@ -65,8 +65,8 @@ public class Repository {
 
     }
 
-    public Maybe<String> getPassword(String username) {
-        Query query = FirebaseDatabase.getInstance().getReference("users/").orderByChild("username").equalTo(username);
+    public Maybe<String> getPassword(@NonNull String username) {
+        final Query query = FirebaseDatabase.getInstance().getReference("users/").orderByChild("username").equalTo(username);
         return RxFirebaseDatabase.observeSingleValueEvent(query,
                 (dataSnapshot -> {
                     for (DataSnapshot dataSnapshotUser : dataSnapshot.getChildren()) {
@@ -79,8 +79,8 @@ public class Repository {
 
     }
 
-    public Flowable<String> getUsersCredencilas(String username) {
-        Query query = FirebaseDatabase.getInstance().getReference("users/").orderByChild("username").equalTo(username);
+    public Flowable<String> getUsersCredencilas(@NonNull String username) {
+        final Query query = FirebaseDatabase.getInstance().getReference("users/").orderByChild("username").equalTo(username);
         return RxFirebaseDatabase.observeValueEvent(query, (dataSnapshot -> {
                     for (DataSnapshot dataSnapshotUser : dataSnapshot.getChildren()) {
                         User user = dataSnapshotUser.getValue(User.class);
@@ -91,12 +91,12 @@ public class Repository {
         ).subscribeOn(Schedulers.io());
     }
 
-    public Flowable getUserHouses(String username) {
-        Query query = FirebaseDatabase.getInstance().getReference("usersHauses/" + username);
+    public Flowable getUserHouses(@NonNull String username) {
+        final Query query = FirebaseDatabase.getInstance().getReference("usersHauses/" + username);
 
-        Flowable<List<UsersHouseInfo>> emptyListFlowable =Flowable.just(new ArrayList<>());
+        final Flowable<List<UsersHouseInfo>> emptyListFlowable =Flowable.just(new ArrayList<>());
 
-        Flowable<List<UsersHouseInfo>> queryFlowable = RxFirebaseDatabase.observeChildEvent(query,UsersHouseInfo.class,BackpressureStrategy.BUFFER)
+        final Flowable<List<UsersHouseInfo>> queryFlowable = RxFirebaseDatabase.observeChildEvent(query,UsersHouseInfo.class,BackpressureStrategy.BUFFER)
                 .map(dataSnapshotRxFirebaseChildEvent -> {
                     UsersHouseInfo usersHouseInfo = dataSnapshotRxFirebaseChildEvent.getValue();
                     usersHouseInfo.setHauseId(dataSnapshotRxFirebaseChildEvent.getKey());
@@ -155,12 +155,12 @@ public class Repository {
 
     }
 
-    public Flowable<List<RoomInfo>> getHousesRooms(String houseId) {
-        Query query = FirebaseDatabase.getInstance().getReference("houses/" + houseId + "/" + "rooms");
+    public Flowable<List<RoomInfo>> getHousesRooms(@NonNull String houseId) {
+        final Query query = FirebaseDatabase.getInstance().getReference("houses/" + houseId + "/" + "rooms");
 
-        Flowable<List<RoomInfo>> emptyListFlowable =Flowable.just(new ArrayList<>());
+        final Flowable<List<RoomInfo>> emptyListFlowable =Flowable.just(new ArrayList<>());
 
-        Flowable<List<RoomInfo>> queryFlowable = RxFirebaseDatabase.observeChildEvent(query, RoomInfo.class, BackpressureStrategy.BUFFER)
+        final Flowable<List<RoomInfo>> queryFlowable = RxFirebaseDatabase.observeChildEvent(query, RoomInfo.class, BackpressureStrategy.BUFFER)
             .map(dataSnapshotRxFirebaseChildEvent -> {
                 RoomInfo roomInfo = dataSnapshotRxFirebaseChildEvent.getValue();
 
@@ -177,15 +177,15 @@ public class Repository {
                             oldArray.add(newArray.get(0));
                         }
                         else if(newArray.get(0).getEventType() == RxFirebaseChildEvent.EventType.REMOVED) {
-                            for (Integer i = 0; i < oldArray.size(); i++){
+                            for (int i = 0; i < oldArray.size(); i++){
                                 if(oldArray.get(i).getData().equals(newArray.get(0).getData()))
                                 {
-                                    oldArray.remove(oldArray.get(i));
+                                    oldArray.remove(i);
                                 }
                             }
                         }
                         else if(newArray.get(0).getEventType() == RxFirebaseChildEvent.EventType.CHANGED) {
-                            for (Integer i = 0; i < oldArray.size(); i++){
+                            for (int i = 0; i < oldArray.size(); i++){
                                 if(oldArray.get(i).getData().equals(newArray.get(0).getData()))
                                 {
                                     oldArray.set(i,newArray.get(0));
@@ -193,10 +193,10 @@ public class Repository {
                             }
                         }
                         else{
-                            for (Integer i = 0; i < oldArray.size(); i++){
+                            for (int i = 0; i < oldArray.size(); i++){
                                 if(oldArray.get(i).getData().equals(newArray.get(0).getData()))
                                 {
-                                    oldArray.remove(oldArray.get(i));
+                                    oldArray.remove(i);
                                 }
                             }
                         }
@@ -215,11 +215,11 @@ public class Repository {
         return Flowable.merge(emptyListFlowable,queryFlowable).throttleLast(500,TimeUnit.MILLISECONDS);
         }
 
-    public Flowable<Room> getRoomDetails(String roomId) {
+    public Flowable<Room> getRoomDetails(@NonNull String roomId) {
 
-        Flowable<List<Door>> doorValueEvent = getDoors(roomId);
-        Flowable<List<Light>> lightValueEvent = getLights(roomId);
-        Flowable<List<Temperature>> temperatureValueEvent = getTemperatures(roomId);
+        final Flowable<List<Door>> doorValueEvent = getDoors(roomId);
+        final Flowable<List<Light>> lightValueEvent = getLights(roomId);
+        final Flowable<List<Temperature>> temperatureValueEvent = getTemperatures(roomId);
 
         return Flowable.combineLatest(doorValueEvent,lightValueEvent,temperatureValueEvent,
                 (doorList,lightList,temperatureList) ->
@@ -232,12 +232,12 @@ public class Repository {
                 });
     }
 
-    private Flowable<List<Door>> getDoors(String roomId) {
-        Query doorsQuery = FirebaseDatabase.getInstance().getReference("rooms/" + roomId + "/doors");
+    private Flowable<List<Door>> getDoors(@NonNull String roomId) {
+        final Query doorsQuery = FirebaseDatabase.getInstance().getReference("rooms/" + roomId + "/doors");
 
-        Flowable<ArrayList<Door>> emptyListFlowable =Flowable.just(new ArrayList<>());
+        final Flowable<ArrayList<Door>> emptyListFlowable =Flowable.just(new ArrayList<>());
 
-        Flowable<List<Door>> queryFlowable = RxFirebaseDatabase.observeChildEvent(doorsQuery,Door.class,BackpressureStrategy.BUFFER)
+        final Flowable<List<Door>> queryFlowable = RxFirebaseDatabase.observeChildEvent(doorsQuery,Door.class,BackpressureStrategy.BUFFER)
                 .map(dataSnapshotRxFirebaseChildEvent -> {
                     Door door = dataSnapshotRxFirebaseChildEvent.getValue();
                     return new MyArray<>(dataSnapshotRxFirebaseChildEvent.getEventType(),door);
@@ -292,11 +292,11 @@ public class Repository {
                 .throttleLast(500,TimeUnit.MILLISECONDS);
     }
 
-    private Flowable<List<Light>> getLights(String roomId) {
-        Query lightsQuery = FirebaseDatabase.getInstance().getReference("rooms/" + roomId + "/lights");
-        Flowable<ArrayList<Light>> emptyListFlowable =Flowable.just(new ArrayList<>());
+    private Flowable<List<Light>> getLights(@NonNull String roomId) {
+        final Query lightsQuery = FirebaseDatabase.getInstance().getReference("rooms/" + roomId + "/lights");
+        final Flowable<ArrayList<Light>> emptyListFlowable =Flowable.just(new ArrayList<>());
 
-        Flowable<List<Light>> queryFlowable  = RxFirebaseDatabase.observeChildEvent(lightsQuery,Light.class,BackpressureStrategy.BUFFER)
+        final Flowable<List<Light>> queryFlowable  = RxFirebaseDatabase.observeChildEvent(lightsQuery,Light.class,BackpressureStrategy.BUFFER)
                 .map(dataSnapshotRxFirebaseChildEvent -> {
                     Light light = dataSnapshotRxFirebaseChildEvent.getValue();
                     return new MyArray<>(dataSnapshotRxFirebaseChildEvent.getEventType(),light);
@@ -352,13 +352,13 @@ public class Repository {
 
     }
 
-    private Flowable<List<Temperature>> getTemperatures(String roomId) {
-        Query temperaturesQuery = FirebaseDatabase.getInstance().getReference("rooms/" + roomId + "/temperatures");
+    private Flowable<List<Temperature>> getTemperatures(@NonNull String roomId) {
+        final Query temperaturesQuery = FirebaseDatabase.getInstance().getReference("rooms/" + roomId + "/temperatures");
 
-        Flowable<ArrayList<Temperature>> emptyListFlowable =Flowable.just(new ArrayList<>());
+        final Flowable<ArrayList<Temperature>> emptyListFlowable =Flowable.just(new ArrayList<>());
 
 
-        Flowable<List<Temperature>> queryFlowable = RxFirebaseDatabase.observeChildEvent(temperaturesQuery,Temperature.class,BackpressureStrategy.BUFFER)
+        final Flowable<List<Temperature>> queryFlowable = RxFirebaseDatabase.observeChildEvent(temperaturesQuery,Temperature.class,BackpressureStrategy.BUFFER)
                 .map(dataSnapshotRxFirebaseChildEvent -> {
                     Temperature temperature = dataSnapshotRxFirebaseChildEvent.getValue();
                     return new MyArray<>(dataSnapshotRxFirebaseChildEvent.getEventType(),temperature);
@@ -413,14 +413,13 @@ public class Repository {
                 .throttleLast(500,TimeUnit.MILLISECONDS);
     }
 
+    public Single<String> changeHousePicture(@NonNull Bitmap picture,@NonNull String username,@NonNull String houseId) {
 
-    public Single<String> changeHousePicture(Bitmap picture, String username, String houseId) {
-
-        String hashedUsername = StringHasher.md5(username);
-        String hashedhouseId = StringHasher.md5(houseId);
+        final String hashedUsername = StringHasher.md5(username);
+        final String hashedhouseId = StringHasher.md5(houseId);
 
 
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference(hashedUsername+hashedhouseId);
+        final StorageReference storageRef = FirebaseStorage.getInstance().getReference(hashedUsername+hashedhouseId);
         return Single.create(new SingleOnSubscribe<UploadTask.TaskSnapshot>() {
                 @Override
                 public void subscribe(SingleEmitter<UploadTask.TaskSnapshot> emitter) throws Exception {
@@ -459,37 +458,33 @@ public class Repository {
                         });
     }
 
-    public Completable changeHouseName(String newName, String username, String houseId)
-    {
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("usersHauses/" + username + "/" + houseId + "/");
-        Map<String,Object> map = new HashMap<>();
+    public Completable changeHouseName(@NonNull String newName,@NonNull String username,@NonNull String houseId) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("usersHauses/" + username + "/" + houseId + "/");
+        final Map<String,Object> map = new HashMap<>();
         map.put("name",newName);
         return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
     }
 
-
-    public Completable changeTargetedTemperature(String roomId,String temperatureId,int targeted){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "temperatures/" + temperatureId + "/");
-        Map<String,Object> map = new HashMap<>();
+    public Completable changeTargetedTemperature(@NonNull String roomId,@NonNull String temperatureId,@NonNull int targeted){
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "temperatures/" + temperatureId + "/");
+        final Map<String,Object> map = new HashMap<>();
         map.put("targeted",targeted);
         return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
 
     }
 
-    public Completable changeLight(String roomId,String lightId,boolean targeted){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "lights/" + lightId + "/");
-        Map<String,Object> map = new HashMap<>();
+    public Completable changeLight(@NonNull String roomId,@NonNull String lightId,@NonNull boolean targeted){
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "lights/" + lightId + "/");
+        final Map<String,Object> map = new HashMap<>();
         map.put("targeted",targeted);
         return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
     }
 
-    public Completable changeDoorLock(String roomId,String doorId,boolean targeted) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "doors/" + doorId + "/");
-        Map<String,Object> map = new HashMap<>();
+    public Completable changeDoorLock(@NonNull String roomId,@NonNull String doorId,@NonNull boolean targeted) {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("rooms/"+ roomId + "/" + "doors/" + doorId + "/");
+        final Map<String,Object> map = new HashMap<>();
         map.put("targeted",targeted);
         return RxFirebaseDatabase.updateChildren(databaseReference,map).subscribeOn(Schedulers.io());
     }
-
 
 }

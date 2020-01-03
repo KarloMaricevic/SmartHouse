@@ -17,6 +17,8 @@ public abstract class AuthViewModel extends ViewModel {
         AUTHENTICATED,
     }
 
+    private SharedPreferencesRepository mSharedPreferencesRepository;
+
     protected String mCurrentUsername;
 
     Observable<String> mUsernameObservable;
@@ -28,6 +30,7 @@ public abstract class AuthViewModel extends ViewModel {
     {
         mUsernameObservable = shearedPrefrencesRepository.getUseranmeObservable();
         mPasswordObservable = shearedPrefrencesRepository.getPasswordObservable();
+        mSharedPreferencesRepository = shearedPrefrencesRepository;
 
         mUsernameObservable.subscribe(
                 (username) -> {
@@ -72,5 +75,9 @@ public abstract class AuthViewModel extends ViewModel {
 
     public Observable<String> getmUsernameObservable() {
         return mUsernameObservable;
+    }
+
+    public SharedPreferencesRepository getSharedPreferencesRepository() {
+        return mSharedPreferencesRepository;
     }
 }

@@ -3,9 +3,11 @@ package com.example.smarthouse.utils;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
+import io.reactivex.annotations.NonNull;
+
 public class PictureResize {
 
-    public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    public static Bitmap getResizedBitmap(@NonNull Bitmap bm,@NonNull int newWidth,@NonNull int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;

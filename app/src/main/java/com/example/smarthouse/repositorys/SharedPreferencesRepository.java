@@ -63,6 +63,9 @@ public class SharedPreferencesRepository {
                 .filter((key) -> key.equals(mAppContext.getString(R.string.password)))
                 .map((key) -> mPreferences.getString(mAppContext.getString(R.string.password), ""))
                 .subscribeOn(Schedulers.io());
+    }
 
+    public void deleteStoredKeys(){
+        mPreferences.edit().clear().commit();
     }
 }

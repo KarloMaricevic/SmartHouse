@@ -8,7 +8,6 @@ import io.reactivex.Observable;
 
 public class MakeObservable {
 
-
     public static Observable<String> makeObservebleForString(ObservableField<String> observableField)
     {
         return Observable.create(

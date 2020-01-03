@@ -86,6 +86,10 @@ public class HousesListViewModel extends AuthViewModel {
        return mRepository.changeHouseName(newName, mCurrentUsername,houseId);
     }
 
+    public void logout(){
+        getSharedPreferencesRepository().deleteStoredKeys();
+    }
+
 
 
 }

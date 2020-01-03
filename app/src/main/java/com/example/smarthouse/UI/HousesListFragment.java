@@ -81,7 +81,6 @@ public class HousesListFragment extends BaseFragment implements IOption {
     public HousesListFragment() {
     }
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         ((BaseAplication) getActivity().getApplication())
@@ -101,9 +100,6 @@ public class HousesListFragment extends BaseFragment implements IOption {
         return mBinding.getRoot();
     }
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -111,21 +107,19 @@ public class HousesListFragment extends BaseFragment implements IOption {
     }
 
     @Override
-    public void onMenuItemClicked(int menuItemId,String houseId) {
+    public void onMenuItemClicked(@NonNull int menuItemId,@NonNull String houseId) {
         mHouseId = houseId;
         switch (menuItemId) {
             case R.string.withCameraMenuId:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if(hasPermissions(Manifest.permission.CAMERA)){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (hasPermissions(Manifest.permission.CAMERA)) {
+                            dispatchTakePictureIntent();
+                        } else {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                        }
+                    } else {
                         dispatchTakePictureIntent();
                     }
-                    else{
-                        requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION_CODE);
-                    }
-                }
-                else {
-                    dispatchTakePictureIntent();
-                }
                 break;
             case R.string.withStorageMenuId:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -186,8 +180,8 @@ public class HousesListFragment extends BaseFragment implements IOption {
                 Toast.makeText(getActivity().getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG);
             }
             else {
-                Bitmap takenPicture = BitmapFactory.decodeFile(mPictureFilePath);
-                File file = new File(mPictureFilePath);
+                final Bitmap takenPicture = BitmapFactory.decodeFile(mPictureFilePath);
+                final File file = new File(mPictureFilePath);
                 file.deleteOnExit();
                 mViewModel.saveBitmapToDatabase(takenPicture, mHouseId).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<String>() {
                     Disposable d;
@@ -217,9 +211,9 @@ public class HousesListFragment extends BaseFragment implements IOption {
             else
             {
                 try {
-                    Uri pictureUri = data.getData();
+                    final Uri pictureUri = data.getData();
                     if(hasPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),pictureUri);
+                        final Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),pictureUri);
                         mViewModel.saveBitmapToDatabase(selectedImage, mHouseId).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<String>() {
                             Disposable d;
                             @Override
@@ -250,7 +244,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
         mPictureFilePath = null;
     }
 
-    public boolean hasPermissions(String permission) {
+    private boolean hasPermissions(String permission) {
         if(ContextCompat.checkSelfPermission(getContext(),permission) == PackageManager.PERMISSION_GRANTED)
         {
             return true;
@@ -261,11 +255,10 @@ public class HousesListFragment extends BaseFragment implements IOption {
         }
     }
 
-
-    public void makeAndConnectObservers(){
+    private void makeAndConnectObservers(){
         //region AuthViewModel
 
-        Disposable authStateDisposable = mViewModel.getmAuthState()
+        final Disposable authStateDisposable = mViewModel.getmAuthState()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((authState) -> {
                             switch (authState) {
@@ -281,7 +274,7 @@ public class HousesListFragment extends BaseFragment implements IOption {
         //endregion
 
         mBinding.recyclerView.setAdapter(mAdapter);
-        Disposable usersHousesDisposable =
+        final Disposable usersHousesDisposable =
                 mViewModel.getUsersHousesObservable()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((usersHousesList) -> {
@@ -307,20 +300,25 @@ public class HousesListFragment extends BaseFragment implements IOption {
             }
         });
 
+         mBinding.toolbar.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(
+                (item) -> {
+                    mViewModel.logout();
+                    Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_global_logInFragment);
+                    return true;
+                }
+        );
 
         addDisposables(authStateDisposable,usersHousesDisposable);
     }
 
-
-    public void dispatchPickPictureIntent() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    private void dispatchPickPictureIntent() {
+        final Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 .setType("image/*");
         startActivityForResult(Intent.createChooser(intent,"Select picture"),PICK_PICTURE_CODE);
     }
 
-
-    public void dispatchTakePictureIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    private void dispatchTakePictureIntent(){
+        final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
         try{
             photoFile = crateImageFile();
@@ -329,18 +327,17 @@ public class HousesListFragment extends BaseFragment implements IOption {
             return;
         }
         if(photoFile != null){
-            Uri photoUri = FileProvider.getUriForFile(getContext(),"com.example.android.fileprovider",photoFile);
+            final Uri photoUri = FileProvider.getUriForFile(getContext(),"com.example.android.fileprovider",photoFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
             startActivityForResult(takePictureIntent,TAKE_PICTURE_CODE);
         }
     }
 
-
     private File crateImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        final String imageFileName = "JPEG_" + timeStamp + "_";
+        final File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        final File image = File.createTempFile(
                     imageFileName,
                     ".jpg",
                     storageDir
@@ -349,8 +346,8 @@ public class HousesListFragment extends BaseFragment implements IOption {
         return image;
     }
 
-    public void createDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    private void createDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         mDialogBinding = DialogChangeNameLayoutBinding.inflate(getActivity().getLayoutInflater());
         AlertDialog dialog = builder
                 .setTitle("New name")
@@ -389,7 +386,13 @@ public class HousesListFragment extends BaseFragment implements IOption {
         dialog.show();
     }
 
-
+    private boolean checkCameraHardware() {
+        if (getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 
