@@ -47,6 +47,8 @@ public class RoomFragment extends BaseFragment {
 
     RoomViewModel mViewModel;
 
+    ActionBar mActionBar;
+
 
     public RoomFragment() {
         // Required empty public constructor
@@ -71,6 +73,22 @@ public class RoomFragment extends BaseFragment {
 
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(RoomViewModel.class);
 
+
+
+        mViewModel.setmHouseId(RoomFragmentArgs.fromBundle(getArguments()).getHouseId());
+
+        setUpToolbar();
+
+        mBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        mBinding.drawerLayout.openDrawer(GravityCompat.START);
+
+        return mBinding.getRoot();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
         //region AuthViewModel
 
         Disposable authStateDisposable = mViewModel.getmAuthState()
@@ -89,37 +107,12 @@ public class RoomFragment extends BaseFragment {
         //endregion
 
 
-        mViewModel.setmHouseId(RoomFragmentArgs.fromBundle(getArguments()).getHouseId());
-
-        setUpToolbar();
-
-        mBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-        mBinding.drawerLayout.openDrawer(GravityCompat.START);
-
-
         Disposable hasUserChosenRoomOnceDisposable = mViewModel.getHasUserChosenRoomOnceObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (hasChosen) -> mBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED),
                         (e) ->{});
 
-        addDisposables(authStateDisposable,hasUserChosenRoomOnceDisposable);
-
-        return mBinding.getRoot();
-    }
-
-    public void setUpToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.roomsToolbar);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if(actionBar != null)
-        {
-            actionBar.setTitle("");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), mBinding.drawerLayout, mBinding.roomsToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-            toggle.setDrawerIndicatorEnabled(true);
-            mBinding.drawerLayout.addDrawerListener(toggle);
-            toggle.syncState();
-        }
 
         Disposable chosenRoomidDisposable= mViewModel
                 .getmChosenRoomIdObservable()
@@ -137,15 +130,32 @@ public class RoomFragment extends BaseFragment {
                 .getChosenRoomNameObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (roomName) -> actionBar.setTitle(roomName),
+                        (roomName) ->  mActionBar.setTitle(roomName),
                         (e) ->Log.e("TitleError: ", e.getMessage())
                 );
 
 
+
+        addDisposables(authStateDisposable,hasUserChosenRoomOnceDisposable,chosenRoomidDisposable,choosenRoomNameDisposable);
+
+    }
+
+    public void setUpToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.roomsToolbar);
+        mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if(mActionBar != null)
+        {
+            mActionBar.setTitle("");
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), mBinding.drawerLayout, mBinding.roomsToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+            toggle.setDrawerIndicatorEnabled(true);
+            mBinding.drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+
+
+
         setBackNavigation();
-        addDisposables(chosenRoomidDisposable,choosenRoomNameDisposable);
-
-
 
     }
 

@@ -73,15 +73,21 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
         mViewModel = ViewModelProviders.of(getParentFragment(), mViewModelFactory).get(RoomViewModel.class);
 
         setUpRecyclerView();
+        return mBinding.getRoot();
+    }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Disposable qeryTextChangeDisposable = RxSearchView.queryTextChangeEvents(mBinding.roomsSearchView)
                 .subscribe(
-                (searchViewQueryTextEvent) ->
-                {
-                    String searchText = searchViewQueryTextEvent.getQueryText().toString();
-                    mViewModel.setmDrawerQueryText(searchText);
+                        (searchViewQueryTextEvent) ->
+                        {
+                            String searchText = searchViewQueryTextEvent.getQueryText().toString();
+                            mViewModel.setmDrawerQueryText(searchText);
 
-                });
+                        });
 
 
         Disposable selectedRoomIdDisposable  = mViewModel
@@ -97,8 +103,6 @@ public class RoomDrawerFragment extends BaseFragment implements INavigation {
 
 
         addDisposables(selectedRoomIdDisposable,qeryTextChangeDisposable);
-
-        return mBinding.getRoot();
     }
 
     @Override

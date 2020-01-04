@@ -85,28 +85,34 @@ public class RoomDetailsFragment extends BaseFragment implements RoomAdapterCall
         mBinding.recyclerView.addItemDecoration(itemDecoration);
         mBinding.recyclerView.setAdapter(mAdapter);
 
-        Disposable observableDataForRoomDisposable =
-            mViewModel
-                .getObservableDataForRoomDetailsAdapter()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        (item) -> {
-                            if(item.size() == 0)
-                            {
-                                mAdapter.changeDataSet(item);
-                                mBinding.errorTextView.setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                mBinding.errorTextView.setVisibility(View.INVISIBLE);
-                                mAdapter.changeDataSet(item);
-                            }
-                        },
-                        (e) -> Log.e("RoomDetailsDataError: " , e.getMessage())
-                );
-
-        addDisposables(observableDataForRoomDisposable);
 
         return mBinding.getRoot();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Disposable observableDataForRoomDisposable =
+                mViewModel
+                        .getObservableDataForRoomDetailsAdapter()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                (item) -> {
+                                    if(item.size() == 0)
+                                    {
+                                        mAdapter.changeDataSet(item);
+                                        mBinding.errorTextView.setVisibility(View.VISIBLE);
+                                    }
+                                    else {
+                                        mBinding.errorTextView.setVisibility(View.INVISIBLE);
+                                        mAdapter.changeDataSet(item);
+                                    }
+                                },
+                                (e) -> Log.e("RoomDetailsDataError: " , e.getMessage())
+                        );
+
+        addDisposables(observableDataForRoomDisposable);
     }
 
     @Override

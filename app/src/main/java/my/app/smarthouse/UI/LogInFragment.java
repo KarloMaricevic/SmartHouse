@@ -60,11 +60,13 @@ public class LogInFragment extends BaseFragment {
         mBinding = FragmentLogInBinding.inflate(inflater,container,false);
         mViewModel = ViewModelProviders.of(this, mProviderFactory).get(LogInViewModel.class);
         mBinding.setViewModel(mViewModel);
+        return mBinding.getRoot();
+    }
 
 
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
         Disposable loginClickDisposable = RxView.clicks(mBinding.cardLayout.cirLoginButton).subscribe(
                 (unit) -> mViewModel.authenticate() ,
                 (e) -> Log.e("LogInClickError", e.getMessage())
@@ -113,11 +115,9 @@ public class LogInFragment extends BaseFragment {
 
         addDisposables(logInPositionDisposable,loginClickDisposable,registerTextViewClickDisposable,loginClickDisposable,areFiledsFilledDisposabe);
 
-        return mBinding.getRoot();
     }
 
-
-    public void hideKeyboard(Context context,View focusedView)
+    public void hideKeyboard(Context context, View focusedView)
     {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(focusedView.getWindowToken(),0);

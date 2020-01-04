@@ -53,17 +53,13 @@ public class LogInViewModel extends ViewModel{
         super();
         this.mRepository = repository;
 
-        mUsername = new ObservableField<>();
-        mPassword = new ObservableField<>();
+        mUsername = new ObservableField<>("");
+        mPassword = new ObservableField<>("");
         mLogInPosition = new ObservableField<>();
 
 
         mUsernameFiledObserver = MakeObservable.makeObservebleForString(mUsername);
         mPasswordFiledObserver = MakeObservable.makeObservebleForString(mPassword);
-
-
-        mUsername.set("darkarcher5");
-        mPassword.set("karlo271236");
 
         mLogInPosition.set(LogInPosition.UNAUTHENTICATED);
     }
