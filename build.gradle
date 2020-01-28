@@ -1,6 +1,23 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
+    ext {
+        materialVersion = '1.1.0-alpha03'
+        dagger2Version = '2.25.2'
+        firebaseDatabase = '16.0.4'
+        firebaseStorage = '16.0.4'
+        firebaseAuth = '16.0.5'
+        rxJava = '2.2.14'
+        rxAndroid = '2.1.1'
+        rxBinding = '3.1.0'
+        rxFirebase = '1.5.6'
+        worker = '2.2.0'
+        glide = '4.10.0'
+        viewModel = '2.1.0'
+        lifecycle = '2.1.0'
+    }
+
     repositories {
         google()
         jcenter()
